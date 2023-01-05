@@ -1,10 +1,7 @@
 # Docker
-
-This repo currently contains docker files which build docker images. Purely used for learning. The Docker files are used by Docker build in the pipelines [repo](https://github.com/heathen1878/azdo_pipelines)
-
 ## Base Linux Images
 
-This example [docker_build.yml](https://raw.githubusercontent.com/heathen1878/Docker/master/base_linux_image/docker_build.yml) file build an Docker Image and deploys to to an Azure Container Registry tagged with the build ID.
+This example [docker_build.yml](https://raw.githubusercontent.com/heathen1878/Docker/master/base_linux_image/docker_build.yml) file builds a Docker Image and deploys it to an Azure Container Registry tagged with the build ID. The template reference can be found [here](https://raw.githubusercontent.com/heathen1878/azdo_pipelines/main/docker_build/docker_build.yml)
 
 ## Azure DevOps Agent
 
