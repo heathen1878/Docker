@@ -1,0 +1,6 @@
+variables:
+  service_connection: ''
+  image_repository: 'azdoagent'
+  container_registry: ''
+  dockerfile_path: $(Build.SourcesDirectory)/azdo_self_hosted_linux_agent/Dockerfile
+  tags: '233'

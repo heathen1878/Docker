@@ -1,0 +1,6 @@
+variables:
+  service_connection: ''
+  image_repository: ''
+  container_registry: ''
+  dockerfile_path: '$(Build.SourcesDirectory)/base_linux_image/Dockerfile'
+  tags: $(Build.BuildId)

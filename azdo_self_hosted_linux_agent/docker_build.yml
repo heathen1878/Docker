@@ -1,0 +1,32 @@
+resources:
+  repositories:
+  - repository: Pipelines
+    name: Pipelines/Pipelines
+    type: git
+    ref: main
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - azdo_self_hosted_linux_agent/Dockerfile
+
+variables:
+  - template: variables.yml
+
+jobs:
+  - job: docker_build
+    displayName: 'Docker build'
+    pool:
+      vmImage: 'ubuntu-latest'
+    
+    steps:
+    - template: Docker/docker_build.yml@Pipelines
+      parameters:
+        acr: $(container_registry)
+        dockerfile_path: $(dockerfile_path)
+        image_repository: $(image_repository)
+        service_connection: $(service_connection)
+        tags: $(tags)
