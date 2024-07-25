@@ -1,8 +1,15 @@
 # Docker
 
 ## Docker Client
-
 Passes commands to the Docker Server
+
+### Create and run a container from an image
+```shell
+docker run 
+```
+
+
+
 
 ## Docker Server
 
@@ -20,7 +27,11 @@ https://www.toptal.com/linux/separation-anxiety-isolating-your-system-with-linux
 Limits amount of resources used per process...
 
 :point_up: specific to Linux
-Docker Desktop runs a Linux Virtual Machine...which is where the containers reside.
+Docker Desktop runs a Linux Virtual Machine...which is where the containers reside and it's that Linux Kernel that controls / isolates access.
+
+```shell
+docker --version
+```
 
 #### Container process
 A running process with access to a given set of resources
