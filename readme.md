@@ -5,8 +5,36 @@ Passes commands to the Docker Server
 
 ### Create and run a container from an image
 ```shell
-docker run 
+docker run hello-world
 ```
+:point_down:
+
+Docker Server will check the image cache for cached copies of the requested image.
+
+```
+Unable to find image 'hello-world:latest' locally
+latest: Pulling from library/hello-world
+c1ec31eb5944: Pull complete 
+Digest: sha256:1408fec50309afee38f3535383f5b09419e6dc0925bc69891e79d84cc4cdcec6
+Status: Downloaded newer image for hello-world:latest
+```
+
+then run the container...
+
+```
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+```
+
+
+
+
 
 
 
