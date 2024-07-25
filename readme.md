@@ -11,17 +11,17 @@ docker run hello-world
 
 Docker Server will check the image cache for cached copies of the requested image.
 
-```
+```text
 Unable to find image 'hello-world:latest' locally
 latest: Pulling from library/hello-world
-c1ec31eb5944: Pull complete 
-Digest: sha256:1408fec50309afee38f3535383f5b09419e6dc0925bc69891e79d84cc4cdcec6
+c1ec31eb5944: Pull complete
+...
 Status: Downloaded newer image for hello-world:latest
 ```
 
 then run the container...
 
-```
+```text
 To generate this message, Docker took the following steps:
  1. The Docker client contacted the Docker daemon.
  2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
@@ -32,7 +32,28 @@ To generate this message, Docker took the following steps:
     to your terminal.
 ```
 
+### Overriding the startup command
 
+```shell
+docker run busybox ls
+```
+
+```text
+$dom in ../Docker on  master [ 📝 ] 
+3s bash $ ➜ sudo docker run busybox ls
+bin
+dev
+etc
+home
+lib
+lib64
+proc
+root
+sys
+tmp
+usr
+var
+```
 
 
 
