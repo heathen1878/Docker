@@ -119,6 +119,10 @@ Execute image build i.e. `docker build --tag name:tag_value .`
 docker build --tag name:tag_value .
 ```
 
+pass in `--progress=plain` to enable a more verbose...
+
+if for some reason you wanted to disable caching pass in `--no-cache`
+
 #### Namespacing
 
 [namespacing](https://www.toptal.com/linux/separation-anxiety-isolating-your-system-with-linux-namespaces)
