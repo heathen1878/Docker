@@ -1,5 +1,5 @@
 # Use an existing image as a base
-FROM alpine
+FROM alpine:3.20.2
 
 # Download and install dependencies, and other commands
 RUN apk add --update redis
