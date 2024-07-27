@@ -102,7 +102,7 @@ You can also use `-it` with docker run.
 
 Docker Server will check the image cache for cached copies of the requested image.
 
-Execute image build i.e. `docker build --tag name:tag_value .`
+Execute image build i.e. `docker build --tag your_docker_id/name:tag_value .`
 
 ### Specifying alternative docker container registries
 
@@ -116,7 +116,7 @@ Execute image build i.e. `docker build --tag name:tag_value .`
 
 ```shell
 # cd into dockerfile document
-docker build --tag name:tag_value .
+docker build --tag your_docker_id/name:tag_value .
 ```
 
 pass in `--progress=plain` to enable a more verbose...
