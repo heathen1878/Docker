@@ -86,7 +86,7 @@ If the container doesn't stop after 10 seconds when docker stop was issued then 
 
 #### Clear down containers
 
-`docker system prune` :pointleft: deletes stopped containers and cleans up build cache
+`docker system prune` :point_left: deletes stopped containers and cleans up build cache
 
 #### Viewing Logs
 
@@ -102,11 +102,22 @@ You can also use `-it` with docker run.
 
 Docker Server will check the image cache for cached copies of the requested image.
 
+Execute image build i.e. `docker build --tag name:tag_value .`
+
 ### Specifying alternative docker container registries
 
 ...
 
 ### Container
+
+[Dockerfile teardown](./redis_server/teardown.md)
+
+[Docker Example](./redis_server/dockerfile)
+
+```shell
+# cd into dockerfile document
+docker build --tag name:tag_value .
+```
 
 #### Namespacing
 
