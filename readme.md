@@ -123,6 +123,14 @@ pass in `--progress=plain` to enable a more verbose...
 
 if for some reason you wanted to disable caching pass in `--no-cache`
 
+#### Manual image
+
+`docker run -it apline` :point_left: grab the ID of this container.
+
+run the commands within the container...
+
+`docker commit -c 'CMD [ "redis-server" ] container-id`
+
 #### Namespacing
 
 [namespacing](https://www.toptal.com/linux/separation-anxiety-isolating-your-system-with-linux-namespaces)
