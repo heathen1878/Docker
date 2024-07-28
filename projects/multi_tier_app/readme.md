@@ -1,0 +1,6 @@
+# Multi Tier App
+
+Contains two containers....a backend and a frontend...
+
+We use docker compose....
+
