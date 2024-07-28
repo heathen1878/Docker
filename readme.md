@@ -183,5 +183,4 @@ variables:
 
 ### Node Js
 
-This is a simple Node Js web app running as a container.
-
+This is a simple Node Js web app running as a container - see [here](./projects/node_js_web_app/readme.md)
