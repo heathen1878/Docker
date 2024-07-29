@@ -60,6 +60,14 @@ usr
 var
 ```
 
+### Running detached
+
+To run a container and have the command prompt returned use `-d` e.g. 
+
+```shell
+docker run -d container-id
+```
+
 ### List running containers
 
 ```shell
