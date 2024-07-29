@@ -2,8 +2,8 @@ version: '3' # docker compose version
 
 services:
   redis-server:
-    image: redis # use a public image
+    image: 'redis' # use a public image
   node-app:
     build: . # use the dockerfile in the src directory
     ports:
-      - "80:8080"
+      - '80:8080'
