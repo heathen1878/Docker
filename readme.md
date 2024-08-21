@@ -92,6 +92,22 @@ Docker `stop` uses `SIGTERM` a.k.a. a graceful shutdown whereas docker kill uses
 
 If the container doesn't stop after 10 seconds when docker stop was issued then docker will automatically issue docker kill. It can depend on whether the running process understands SIGTERM, if not a SIGKILL will be needed.
 
+#### Volumes
+
+You can connect Docker containers to reference the local filesystem using references e.g.
+
+```shell
+docker run -v local_path:/container_path
+
+# You can also bookmark a container path within a path reference e.g
+docker run -v container_path/directory_within_container -v local_path:/container_path
+```
+
+:point_up: in the example above directory_within_container would not reference the local filesystem even though the root directory references the local filesystem.
+
+__NOTE__
+Docker Compose is useful when you need to pass many options to Docker.
+
 #### Clear down containers
 
 `docker system prune` :point_left: deletes stopped containers and cleans up build cache
@@ -105,6 +121,8 @@ If the container doesn't stop after 10 seconds when docker stop was issued then 
 `docker exec -it container id sh | bash`
 
 You can also use `-it` with docker run.
+
+You can also connect to an existing running container using `docker attach containerid`; the limitation of this is, stdin is only connected to the primary process.
 
 ## Docker Server
 
