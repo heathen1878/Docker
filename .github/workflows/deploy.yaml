@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - projects/production_grade_flow/frontend
 
 jobs:
   build:
@@ -10,5 +12,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker build -t cygnetops/react-test -f Dockerfile.dev .
-      - run: docker run -e CI=true cygnetops/react-test npm test
+      - run: docker build -t heathen1878/testme -f Dockerfile.dev .
+      - run: docker run -e CI=true heathen1878/testme npm test
