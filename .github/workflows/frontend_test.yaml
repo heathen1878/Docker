@@ -5,6 +5,9 @@ on:
       - master
     paths:
       - projects/production_grade_flow/frontend
+  pull_request: 
+    branches:
+      - '*'  
 
 jobs:
   build:
