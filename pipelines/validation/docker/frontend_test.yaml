@@ -1,0 +1,27 @@
+
+pool: ubuntu-latest
+
+stages:
+- stage: validate_frontend
+  display_name: "Run NPM tests"
+  jobs:
+  - job: docker_build
+    display_name: "Docker Build"
+    steps:
+    - task: Bash@3
+      display_name: "Build Docker image"
+      inputs:
+        failOnStderr: true
+        targetType: inline
+        script: |
+          cd ./projects/production_grade_flow/frontend
+          docker build -t heathen1878/testme -f dockerfile.dev .
+        workingDirectory: $(System.DefaultWorkingDirectory)
+    - task: Bash@3
+      display_name: "Run NPM tests"
+      inputs:
+        failOnStderr: true
+        targetType: inline
+        script: |
+          docker run -e CI=true heathen1878/testme npm test
+        workingDirectory: $(System.DefaultWorkingDirectory)

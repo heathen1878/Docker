@@ -25,3 +25,11 @@ See [dockerfile](./dockerfile)
 `docker run -p 80:80 frontend`
 
 [result](http://localhost)
+
+## Testing GitHub Actions
+
+See the GitHub Actions [yaml](../../../.github/workflows/frontend_test.yaml) file.
+
+## Testing AzDo validation
+
+See the [yaml]() file.
