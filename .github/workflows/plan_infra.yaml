@@ -15,11 +15,19 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v2
 
-      # - name: auth
-      #   uses: azure/login@v2
-      #   with:
-      #     creds: ${{ secrets.AZURE_CREDENTIALS }}
-      #     enable-AzPSSession: true
+      - name: auth
+        uses: azure/login@v2
+        with:
+          creds: '{"clientId": "${{ secrets.ARM_CLIENT_ID }}", "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}", "tenantId": "${{ secrets.ARM_TENANT_ID }}", "subscriptionId": "${{ vars.ARM_SUBSCRIPTION_ID }}"}'
+
+      - name: get runner ip
+        run: |
+          IP_ADDR=$(curl -s https://ifconfig.me/ip)
+
+      - name: modify state storage acl
+        run: |
+          echo $IP_ADDR
+          az storage account network-rule add --account-name ${{ vars.STATE_STORAGE_ACCOUNT }} --ip-address $IPADDR --subscription ${{ vars.ARM_SUBSCRIPTION_ID }}
 
       - name: install terraform
         uses: hashicorp/setup-terraform@v3
@@ -46,4 +54,9 @@ jobs:
           -backend-config="key=${{ vars.STATE_FILE_NAME }}"
 
           terraform plan
-        
+      
+      - name: modify state storage acl - clean up
+        run: |
+          echo $IP_ADDR
+          az storage account network-rule remove --account-name ${{ vars.STATE_STORAGE_ACCOUNT }} --ip-address $IPADDR --subscription ${{ vars.ARM_SUBSCRIPTION_ID }}
+  
