@@ -6,7 +6,7 @@ Generate a project using `npx`
 npx create-react-app frontend
 ```
 
-## Build
+## Local Build
 
 ```shell
 docker build -f dockerfile.name .
@@ -15,7 +15,7 @@ docker build -f dockerfile.name .
 docker build -f dockerfile.name -t frontend .
 ```
 
-## Tests
+## Local Testing
 
 Tests can be run either by connecting standard in to an already existing container...
 
@@ -27,11 +27,34 @@ docker exec -it container
 npm run test
 ```
 
-### Using Docker Compose
+### Using Docker Compose locally
 
 `docker compose up`
 
 ## Azure DevOps Project / GitHub Account
+
+### Prerequisites
+
+#### Github
+
+[GitHub Cli](https://cli.github.com/)
+
+#### Azure DevOps
+
+[Az cli](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?view=azure-cli-latest&pivots=apt)
+
+### Github Secrets
+
+Create github secrets to login into DockerHub
+
+```shell
+# Syntax
+gh secret set NAME -b "secret value" -r "repo name"
+
+gh secret set DOCKER_PASSWORD -b "" -r "account_name/repo_name"
+```
+
+### Azdo Library Variables
 
 Create a repo in your AzDo Project or GitHub account...
 

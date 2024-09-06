@@ -12,6 +12,7 @@ RUN npm run build
 # Run phase
 FROM nginx
 
+# Copy content from /app/build to nginx default site directory
 COPY --from=base /app/build /usr/share/nginx/html
 
 # default command of the nginx container is to start nginx

@@ -1,16 +1,16 @@
 name: Deploy Frontend
 on:
-  push:
+  pull_request: 
     branches:
-      - master
-    paths:
-      - projects/production_grade_flow/frontend
+      - '*'  
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      #- run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker build -t heathen1878/testme -f ../../projects/production_grade_flow/frontend/dockerfile.dev .
+      - run: |
+          cd ./projects/production_grade_flow/frontend
+          docker build -t heathen1878/testme -f dockerfile.dev .
+      - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - run: docker run -e CI=true heathen1878/testme npm test
