@@ -30,6 +30,8 @@ jobs:
         run: |
           echo $IPADDR
           az storage account network-rule add --account-name ${{ vars.STATE_STORAGE_ACCOUNT }} --ip-address $IPADDR --subscription ${{ vars.ARM_SUBSCRIPTION_ID }}
+          echo "Pausing for 60 seconds to ensure the ACL has been set..."
+          sleep 60
 
       - name: install terraform
         uses: hashicorp/setup-terraform@v3
