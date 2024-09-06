@@ -52,11 +52,9 @@ Create github secrets to login into DockerHub
 gh secret set NAME -b "secret value" -r "repo name"
 
 gh secret set DOCKER_PASSWORD -b "" -r "account_name/repo_name"
-
 ```
 
 ### Azdo Library Variables
-
 
 Create a repo in your AzDo Project or GitHub account...
 
