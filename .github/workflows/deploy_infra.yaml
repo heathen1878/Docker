@@ -1,20 +1,20 @@
 name: Deploy Infra
 
 on:
-    push:
-        branches: master
+  push:
+    branches: master
 
 jobs:
-    deploy_infra:
-        runs-on: ubuntu-latest
-        steps:
-        - name: auth
-          uses: azure/login@v2
-          with:
-            creds: ${{ secrets.AZURE_CREDENTIALS }}
-            enable-AzPSSession: true
-        - name: install_terraform
-          uses: hashicorp/setup-terraform@v3
-          with:
-            terraform_version: ${{ vars.TERRAFORM_VERSION }}
+  deploy_infra:
+    runs-on: ubuntu-latest
+      steps:
+      - name: auth
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+      - name: install_terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ vars.TERRAFORM_VERSION }}
         
