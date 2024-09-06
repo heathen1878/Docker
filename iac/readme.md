@@ -25,5 +25,5 @@ gh variable set STATE_FILE_NAME -b state_file_name -r "account_name/repo_name"
 Create github secrets to authenticate with Azure
 
 ```shell
-gh secret set AZURE_CREDENTIALS -b "{"clientId": "<Client ID>","clientSecret": "<Client Secret>","subscriptionId": "<Subscription ID>","tenantId": "<Tenant ID>",}" -r "account_name/repo_name"
+gh secret set AZURE_CREDENTIALS -b "{"clientId": "<Client ID>","clientSecret": "<Client Secret>","subscriptionId": "<Subscription ID>","tenantId": "<Tenant ID>"}" -r "account_name/repo_name"
 ```
