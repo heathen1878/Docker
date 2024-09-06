@@ -6,8 +6,9 @@ on:
 
 jobs:
   deploy_infra:
-    runs-on: ubuntu-latest
-      steps:
+    runs-on: 
+      ubuntu-latest
+    steps:
       - name: auth
         uses: azure/login@v2
         with:

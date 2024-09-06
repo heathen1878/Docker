@@ -10,7 +10,7 @@ jobs:
     name: Run tests on docker image
     steps:
       - name: checkout repository
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
 
       - name: docker build
         run: |
