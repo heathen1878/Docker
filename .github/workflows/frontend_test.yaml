@@ -1,4 +1,4 @@
-name: Deploy Frontend
+name: Test Frontend Docker Build
 on:
   pull_request: 
     branches:
@@ -7,10 +7,18 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    name: Run tests on docker image
     steps:
-      - uses: actions/checkout@v2
-      - run: |
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+      - name: docker build
+        run: |
           cd ./projects/production_grade_flow/frontend
           docker build -t heathen1878/testme -f dockerfile.dev .
-      - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker run -e CI=true heathen1878/testme npm test
+
+      - name: docker login
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: docker run with tests
+        run: docker run -e CI=true heathen1878/testme npm test
