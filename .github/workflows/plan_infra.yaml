@@ -21,12 +21,14 @@ jobs:
           creds: '{"clientId": "${{ secrets.ARM_CLIENT_ID }}", "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}", "tenantId": "${{ secrets.ARM_TENANT_ID }}", "subscriptionId": "${{ vars.ARM_SUBSCRIPTION_ID }}"}'
 
       - name: get runner ip
+        id: runner_ip
         run: |
           IP_ADDR=$(curl -s https://ifconfig.me/ip)
+          echo "IPADDR=$IP_ADDR" >> $GITHUB_ENV
 
       - name: modify state storage acl
         run: |
-          echo $IP_ADDR
+          echo $IPADDR
           az storage account network-rule add --account-name ${{ vars.STATE_STORAGE_ACCOUNT }} --ip-address $IPADDR --subscription ${{ vars.ARM_SUBSCRIPTION_ID }}
 
       - name: install terraform
@@ -57,6 +59,6 @@ jobs:
       
       - name: modify state storage acl - clean up
         run: |
-          echo $IP_ADDR
+          echo $IPADDR
           az storage account network-rule remove --account-name ${{ vars.STATE_STORAGE_ACCOUNT }} --ip-address $IPADDR --subscription ${{ vars.ARM_SUBSCRIPTION_ID }}
   
