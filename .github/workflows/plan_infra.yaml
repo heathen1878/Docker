@@ -68,33 +68,34 @@ jobs:
           export ARM_SUBSCRIPTION_ID=${{ vars.ARM_SUBSCRIPTION_ID }}
           export ARM_USE_AZUREAD=true
 
-          terraform plan -no-color
+          terraform plan -no-color -out out.tfplan
 
-      - name: comments
-        uses: actions/github-script@v7
-        env:
-          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+          cat out.tfplan > $GITHUB_STEP_SUMMARY
 
-            <details><summary>Show Plan</summary>
+      # - name: comments
+      #   uses: actions/github-script@v7
+      #   env:
+      #     PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      #   with:
+      #     script: |
+      #       #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
-            \`\`\`\n
-            ${process.env.PLAN}
-            \`\`\`
+      #       <details><summary>Show Plan</summary>
 
-            </details>
+      #       \`\`\`\n
+      #       ${process.env.PLAN}
+      #       \`\`\`
 
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+      #       </details>
 
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
+      #       *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
+      #       github.rest.issues.createComment({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: output
+      #       })
 
       - name: modify state storage acl - clean up
         if: always()
