@@ -32,4 +32,4 @@ See the GitHub Actions [yaml](../../../.github/workflows/frontend_test.yaml) fil
 
 ## Testing AzDo validation
 
-See the [yaml]() file.
+See the [yaml](../../../pipelines/validation/docker/frontend_test.yaml) file.

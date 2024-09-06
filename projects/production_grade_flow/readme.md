@@ -49,13 +49,11 @@ Create github secrets to login into DockerHub
 
 ```shell
 # Syntax
-gh secret set -b "secret value" -r "repo name"
+gh secret set NAME -b "secret value" -r "repo name"
 
 gh secret set DOCKER_PASSWORD -b "" -r "account_name/repo_name"
 
 ```
-
-
 
 ### Azdo Library Variables
 
