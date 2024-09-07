@@ -40,25 +40,16 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ vars.TERRAFORM_VERSION }}
-
-      - name: set_authentication_variables
-        id: auth
-        run: |
-          echo "ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" >> $GITHUB_OUTPUT
-          echo "ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" >> $GITHUB_OUTPUT
-          echo "ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}" >> $GITHUB_OUTPUT
-          echo "ARM_SUBSCRIPTION_ID=${{ vars.ARM_SUBSCRIPTION_ID }}" >> $GITHUB_OUTPUT
-          echo "ARM_USE_AZUREAD=true" >> $GITHUB_OUTPUT
-      
+     
       - name: terraform init
         id: init
         run: |
           # export variables as environment variables
-          export ${{ steps.auth.outputs.ARM_CLIENT_ID }}
-          export ${{ steps.auth.outputs.ARM_CLIENT_SECRET }}
-          export ${{ steps.auth.outputs.ARM_TENANT_ID }}
-          export ${{ steps.auth.outputs.ARM_SUBSCRIPTION_ID }}
-          export ${{ steps.auth.outputs.ARM_USE_AZUREAD }}
+          export ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}
+          export ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}
+          export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}
+          export ARM_SUBSCRIPTION_ID=${{ vars.ARM_SUBSCRIPTION_ID }}
+          export ARM_USE_AZUREAD=true
           
           terraform init \
           -upgrade \
@@ -71,11 +62,11 @@ jobs:
         id: plan
         run: |
           # export variables as environment variables
-          export ${{ steps.auth.outputs.ARM_CLIENT_ID }}
-          export ${{ steps.auth.outputs.ARM_CLIENT_SECRET }}
-          export ${{ steps.auth.outputs.ARM_TENANT_ID }}
-          export ${{ steps.auth.outputs.ARM_SUBSCRIPTION_ID }}
-          export ${{ steps.auth.outputs.ARM_USE_AZUREAD }}
+          export ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}
+          export ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}
+          export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}
+          export ARM_SUBSCRIPTION_ID=${{ vars.ARM_SUBSCRIPTION_ID }}
+          export ARM_USE_AZUREAD=true
 
           terraform plan -no-color -out out.tfplan
 
