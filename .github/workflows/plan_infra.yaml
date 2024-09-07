@@ -53,8 +53,6 @@ jobs:
       - name: terraform init
         id: init
         run: |
-          cd ./iac/frontend_app_service
-
           # export variables as environment variables
           export ${{ steps.auth.outputs.ARM_CLIENT_ID }}
           export ${{ steps.auth.outputs.ARM_CLIENT_SECRET }}
@@ -72,8 +70,6 @@ jobs:
       - name: terraform plan
         id: plan
         run: |
-          cd ./iac/frontend_app_service
-
           # export variables as environment variables
           export ${{ steps.auth.outputs.ARM_CLIENT_ID }}
           export ${{ steps.auth.outputs.ARM_CLIENT_SECRET }}
