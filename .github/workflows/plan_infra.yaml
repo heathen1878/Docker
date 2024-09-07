@@ -71,6 +71,9 @@ jobs:
 
           terraform show -no-color out.tfplan > plan.md
 
+          sed -i '3 i\```' plan.md
+          echo '```' >> plan.md
+
           cat plan.md > $GITHUB_STEP_SUMMARY
 
       # - name: comments
