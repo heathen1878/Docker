@@ -79,18 +79,30 @@ jobs:
 
       - name: comments
         uses: actions/github-script@v7
+        env:
+          PLAN: ${{ steps.plan.outputs.stdout }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const output = `#### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+            <details><summary>Show Plan</summary>
+
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
+
+            </details>
+
             Pusher: @${{ github.actor }}
-            Action: \`${{ github.event_name }}\`
-            Workflow: \`${{ github.workflow }}\`
+            Action: ${{ github.event_name }}
+            Workflow: ${{ github.workflow }}
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: ${{ steps.plan.outputs.stdout }}
+              body: output
             })
             
       - name: modify state storage acl - clean up
