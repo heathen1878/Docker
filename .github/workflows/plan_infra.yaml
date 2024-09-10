@@ -63,6 +63,10 @@ jobs:
           -backend-config="container_name=${{ vars.STATE_STORAGE_CONTAINER }}" \
           -backend-config="key=${{ vars.STATE_FILE_NAME }}"
      
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
       - name: terraform plan
         id: plan
         run: |
@@ -90,6 +94,15 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+
+            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+            <details><summary>Validation Output</summary>
+
+            \`\`\`\n
+            ${{ steps.validate.outputs.stdout }}
+            \`\`\`
+
+            </details>
                         
             #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
