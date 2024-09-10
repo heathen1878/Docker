@@ -2,7 +2,9 @@ name: Test Frontend Docker Build
 on:
   pull_request: 
     branches:
-      - '*'  
+      - '*'
+    paths:
+      - '**dockerfile*'
 
 jobs:
   build:
