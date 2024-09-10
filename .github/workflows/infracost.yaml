@@ -1,5 +1,22 @@
 on:
   workflow_call:
+    inputs:
+      BASE_BRANCH:
+        description: "The base branch reference"
+        required: true
+        type: string
+      PR_ID:
+        description: "The PR ID"
+        required: true
+        type: string
+      PR_STATUS:
+        description: "The PR Status"
+        required: true
+        type: string
+      PR_URL:
+        description: "The PR Url"
+        required: true
+        type: string
     secrets:
       API_KEY:
         required: true
@@ -23,7 +40,7 @@ jobs:
         - name: Checkout base branch
           uses: actions/checkout@v4
           with:
-            ref: '${{ github.event.pull_request.base.ref }}'
+            ref: ${{ inputs.base_branch }}
   
         - name: Generate Infracost cost estimate baseline
           run: |
@@ -46,7 +63,7 @@ jobs:
               infracost comment github --path=/tmp/infracost.json \
                                        --repo=$GITHUB_REPOSITORY \
                                        --github-token=${{ github.token }} \
-                                       --pull-request=${{ github.event.pull_request.number }} \
+                                       --pull-request=${{ inputs.PR_ID }} \
                                        --behavior=update
   
     infracost-default-branch-update:
@@ -79,14 +96,14 @@ jobs:
       - name: Infracost PR Status Update
         run: |
           PR_STATUS="MERGED"
-          if [[ ${{ github.event.pull_request.merged }} = false ]]; then PR_STATUS="CLOSED"; fi
+          if [[ ${{ inputs.PR_STATUS }} = false ]]; then PR_STATUS="CLOSED"; fi
   
-          echo "Updating status of ${{ github.event.pull_request.html_url }} to $PR_STATUS"
+          echo "Updating status of ${{ inputs.PR_URL }} to $PR_STATUS"
           curl -i \
             --request POST \
             --header "Content-Type: application/json" \
             --header "X-API-Key: $API_KEY" \
-            --data "{ \"query\": \"mutation {updatePullRequestStatus( url: \\\"${{ github.event.pull_request.html_url }}\\\", status: $PR_STATUS )}\" }" \
+            --data "{ \"query\": \"mutation {updatePullRequestStatus( url: \\\"${{ inputs.PR_URL }}\\\", status: $PR_STATUS )}\" }" \
             "https://dashboard.api.infracost.io/graphql";
         env:
           API_KEY: ${{ secrets.API_KEY }}

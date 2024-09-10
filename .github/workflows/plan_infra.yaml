@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: auth
         uses: azure/login@v2
@@ -125,9 +125,16 @@ jobs:
               body: output
             })
 
+      - name: checkout
+        uses: actions/checkout@v3
+
       - name: Run Infracost
         uses: ./.github/workflows/infracost.yaml
         with:
+          BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
+          PR_ID: ${{ github.event.pull_request.number }}
+          PR_STATUS: ${{ github.event.pull_request.merged }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
           API_KEY: ${{ secrets.INFRACOST_API_KEY }}
       
       - name: modify state storage acl - clean up
