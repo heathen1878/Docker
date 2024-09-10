@@ -124,10 +124,12 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
-           
-      - name: Run Infracost
-        uses: ./.github/workflows.infracost.yaml
 
+      - name: Run Infracost
+        uses: ./.github/workflows/infracost.yaml
+        with:
+          API_KEY: ${{ secrets.INFRACOST_API_KEY }}
+      
       - name: modify state storage acl - clean up
         if: always()
         run: |

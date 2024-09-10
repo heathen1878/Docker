@@ -1,9 +1,8 @@
 on:
-    pull_request: 
-        branches:
-          - '*'
-        paths:
-          - '**.tf'
+  workflow_call:
+    secrets:
+      API_KEY:
+        required: true
   
 env:
     SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -19,7 +18,7 @@ jobs:
         - name: Setup Infracost
           uses: infracost/actions/setup@v3
           with:
-            api-key: ${{ secrets.INFRACOST_API_KEY }}
+            api-key: ${{ secrets.API_KEY }}
   
         - name: Checkout base branch
           uses: actions/checkout@v4
@@ -58,7 +57,7 @@ jobs:
         - name: Setup Infracost
           uses: infracost/actions/setup@v3
           with:
-            api-key: ${{ secrets.INFRACOST_API_KEY }}
+            api-key: ${{ secrets.API_KEY }}
   
         - name: Checkout main/master branch
           uses: actions/checkout@v4
@@ -86,8 +85,8 @@ jobs:
           curl -i \
             --request POST \
             --header "Content-Type: application/json" \
-            --header "X-API-Key: $INFRACOST_API_KEY" \
+            --header "X-API-Key: $API_KEY" \
             --data "{ \"query\": \"mutation {updatePullRequestStatus( url: \\\"${{ github.event.pull_request.html_url }}\\\", status: $PR_STATUS )}\" }" \
             "https://dashboard.api.infracost.io/graphql";
         env:
-          INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
+          API_KEY: ${{ secrets.API_KEY }}
