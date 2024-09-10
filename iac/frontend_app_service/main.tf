@@ -9,6 +9,8 @@ locals {
   tags = {
     managedby = "Terraform"
     pipeline  = "Github Actions"
+    service   = "Frontend App"
+    environment = "Dev"
   }
 
   # values from the Docker build task
@@ -19,7 +21,7 @@ locals {
 resource "azurerm_resource_group" "this" {
   name     = local.resource_group_name
   location = local.location
-  tags = local.tags
+  tags     = local.tags
 }
 
 resource "azurerm_service_plan" "this" {
@@ -28,6 +30,7 @@ resource "azurerm_service_plan" "this" {
   resource_group_name = azurerm_resource_group.this.name
   os_type             = "Linux"
   sku_name            = "P0v3"
+  tags = local.tags
 }
 
 resource "azurerm_linux_web_app" "this" {
@@ -42,4 +45,5 @@ resource "azurerm_linux_web_app" "this" {
       docker_registry_url = local.docker_registry_url
     }
   }
+  tags = local.tags
 }
