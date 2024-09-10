@@ -22,7 +22,7 @@ resource "azurerm_service_plan" "this" {
   location            = local.location
   resource_group_name = azurerm_resource_group.this.name
   os_type             = "Linux"
-  sku_name            = "S1"
+  sku_name            = "P0v3"
 }
 
 resource "azurerm_linux_web_app" "this" {
