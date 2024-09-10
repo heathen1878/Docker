@@ -215,9 +215,9 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `#### Terraform Apply :heavy_check_mark: \`${{ steps.apply.outcome }}`
+            const output = `#### Terraform Apply :heavy_check_mark: \`${{ steps.apply.outcome }}\`
             
-            #### Check - Sandbox deployment is correct...`;
+            #### Check :mag: - Sandbox deployment is correct...`;
   
             github.rest.issues.createComment({
               issue_number: context.issue.number,
