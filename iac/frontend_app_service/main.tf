@@ -6,6 +6,10 @@ locals {
   name                = "frontend"
   location            = "uksouth"
   random              = random_id.this.hex
+  tags = {
+    managedby = "Terraform"
+    pipeline  = "Github Actions"
+  }
 
   # values from the Docker build task
   docker_image_name   = "frontend"
@@ -15,6 +19,7 @@ locals {
 resource "azurerm_resource_group" "this" {
   name     = local.resource_group_name
   location = local.location
+  tags = local.tags
 }
 
 resource "azurerm_service_plan" "this" {
