@@ -20,6 +20,7 @@ jobs:
   plan_infra:
     runs-on: ubuntu-latest
     name: Plan Infrastructure using Terraform
+    needs: cost_infra
 
     defaults:
       run:
@@ -143,6 +144,7 @@ jobs:
   deploy_infra_to_sandbox:
     runs-on: ubuntu-latest
     name: Deploy Infrastructure using Terraform
+    needs: plan_infra
 
     defaults:
       run:
@@ -229,6 +231,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Check the sandbox deployment
     environment: sandbox
+    needs: deploy_infra_to_sandbox
 
     defaults:
       run:

@@ -5,7 +5,7 @@ locals {
   app_service_name    = format("app-%s-%s-%s", local.name, local.location, local.random)
   name                = "frontend"
   location            = "uksouth"
-  random              = random_id.this
+  random              = random_id.this.hex
 
   # values from the Docker build task
   docker_image_name   = "frontend"
