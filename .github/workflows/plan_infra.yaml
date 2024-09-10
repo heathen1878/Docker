@@ -124,7 +124,10 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
-            
+           
+      - name: Run Infracost
+        uses: ./.github/workflows.infracost.yaml
+
       - name: modify state storage acl - clean up
         if: always()
         run: |
