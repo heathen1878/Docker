@@ -14,7 +14,7 @@ locals {
   }
 
   # values from the Docker build task
-  docker_image_name   = "frontend"
+  docker_image_name   = "heathen1878/demo:"
   docker_registry_url = "https://index.docker.io"
 }
 
