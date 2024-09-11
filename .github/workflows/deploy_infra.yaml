@@ -5,6 +5,7 @@ on:
     branches: master
     paths:
       - '**.tf'
+      - '**dockerfile*'
 
 jobs:
   deploy_infra:

@@ -5,6 +5,7 @@ on:
       - '*'
     paths:
       - '**.tf'
+      - '**dockerfile*'
 
 jobs:
   cost_infra:
