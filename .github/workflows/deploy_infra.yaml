@@ -10,6 +10,11 @@ jobs:
   deploy_infra:
     runs-on: ubuntu-latest
     name: Deploy Infrastructure using Terraform
+
+    defaults:
+      run:
+        working-directory: ./iac/frontend_app_service
+
     steps:
       - name: checkout repository
         uses: actions/checkout@v3

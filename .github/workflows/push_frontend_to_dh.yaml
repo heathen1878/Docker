@@ -3,6 +3,8 @@ name: Push Frontend To Docker Hub
 on:
   push:
     branches: master
+    paths:
+      - '**dockerfile*'
 
 jobs:
   push_to_registry:
