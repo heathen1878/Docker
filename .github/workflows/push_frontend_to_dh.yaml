@@ -31,3 +31,9 @@ jobs:
           context: .
           push: true
           tags: ${{ vars.DOCKER_USERNAME }}/${{ vars.DOCKER_IMAGE_NAME }}:${{ github.run_number }}
+      
+      - name: Update docker tag variable
+        run: |
+          gh variable set DOCKER_TAG -b ${{ github.run_number }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
