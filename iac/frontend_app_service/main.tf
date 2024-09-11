@@ -1,8 +1,8 @@
 locals {
   # define some local variables
-  resource_group_name = format("rg-%s-%s-%s", local.name, local.location, local.random)
-  app_service_plan    = format("plan-%s-%s-%s", local.name, local.location, local.random)
-  app_service_name    = format("app-%s-%s-%s", local.name, local.location, local.random)
+  resource_group_name = format("rg-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
+  app_service_plan    = format("plan-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
+  app_service_name    = format("app-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
   name                = "frontend"
   location            = "uksouth"
   random              = random_id.this.hex
@@ -10,7 +10,7 @@ locals {
     managedby   = "Terraform"
     pipeline    = "Github Actions"
     service     = "Frontend App"
-    environment = "Dev"
+    environment = var.environment
   }
 
   # values from the Docker build task
