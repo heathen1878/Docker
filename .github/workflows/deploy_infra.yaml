@@ -3,6 +3,8 @@ name: Deploy Infra
 on:
   push:
     branches: master
+    paths:
+      - '**.tf'
 
 jobs:
   deploy_infra:
