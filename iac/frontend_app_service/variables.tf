@@ -1,5 +1,5 @@
 variable "environment" {
   description = "Environment"
-  default     = "sandbox"
+  default     = "sbx"
   type        = string
 }
