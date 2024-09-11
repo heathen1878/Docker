@@ -105,6 +105,13 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            <details><summary>Formatting Output</summary>
+
+            \`\`\`\n
+            ${{ steps.fmt.outputs.stdout }}
+            \`\`\`
+
+            </details>
 
             #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
             <details><summary>Validation Output</summary>
@@ -304,7 +311,7 @@ jobs:
           -backend-config="key=${{ vars.STATE_FILE_NAME }}"
 
       - name: terraform apply
-        id: apply
+        id: destroy
         run: |
           # export variables as environment variables
           export ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}
@@ -325,7 +332,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `#### Terraform Apply :heavy_check_mark: \`${{ steps.apply.outcome }}\`
+            const output = `#### Terraform Destroy :heavy_check_mark: \`${{ steps.destroy.outcome }}\`
             
             #### Sandbox removed! :heavy_check_mark: `;
 
