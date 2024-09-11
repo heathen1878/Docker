@@ -14,7 +14,7 @@ locals {
   }
 
   # values from the Docker build task
-  docker_image_name   = "heathen1878/demo:"
+  docker_image_name   = format("%s/%s:%s", var.docker_username, var.docker_image_name, var.docker_image_tag)
   docker_registry_url = "https://index.docker.io"
 }
 

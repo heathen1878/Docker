@@ -56,7 +56,7 @@ jobs:
           -input=false \
           -backend-config="storage_account_name=${{ vars.STATE_STORAGE_ACCOUNT }}" \
           -backend-config="container_name=${{ vars.STATE_STORAGE_CONTAINER }}" \
-          -backend-config="key=${{ vars.STATE_FILE_NAME }}"
+          -backend-config="key=prod.tfstate"
 
       - name: terraform apply
         id: apply
