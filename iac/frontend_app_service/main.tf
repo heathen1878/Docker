@@ -5,7 +5,13 @@ locals {
   app_service_name    = format("app-%s-%s-%s", local.name, local.location, local.random)
   name                = "frontend"
   location            = "uksouth"
-  random              = random_id.this
+  random              = random_id.this.hex
+  tags = {
+    managedby   = "Terraform"
+    pipeline    = "Github Actions"
+    service     = "Frontend App"
+    environment = "Dev"
+  }
 
   # values from the Docker build task
   docker_image_name   = "frontend"
@@ -15,6 +21,7 @@ locals {
 resource "azurerm_resource_group" "this" {
   name     = local.resource_group_name
   location = local.location
+  tags     = local.tags
 }
 
 resource "azurerm_service_plan" "this" {
@@ -22,7 +29,8 @@ resource "azurerm_service_plan" "this" {
   location            = local.location
   resource_group_name = azurerm_resource_group.this.name
   os_type             = "Linux"
-  sku_name            = "S1"
+  sku_name            = "P0v3"
+  tags                = local.tags
 }
 
 resource "azurerm_linux_web_app" "this" {
@@ -37,4 +45,5 @@ resource "azurerm_linux_web_app" "this" {
       docker_registry_url = local.docker_registry_url
     }
   }
+  tags = local.tags
 }
