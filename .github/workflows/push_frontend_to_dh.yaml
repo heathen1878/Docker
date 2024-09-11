@@ -10,6 +10,11 @@ jobs:
   push_to_registry:
     runs-on: ubuntu-latest
     name: Push Frontend to Docker Hub
+
+    defaults:
+      run:
+        working-directory: ./projects/production_grade_flow/frontend
+
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
@@ -20,11 +25,15 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       
-      - name: docker build
+      - name: build and push image to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ vars.DOCKER_USERNAME }}/${{ vars.DOCKER_IMAGE_NAME }}:${{ github.run_number }}
+      
+      - name: Update docker tag variable
         run: |
-            cd ./projects/production_grade_flow/frontend
-            docker build -t heathen1878/demo:latest -f dockerfile .
-
-      - name: docker push
-        run: |
-          docker image push heathen1878/demo:latest
+          gh variable set DOCKER_TAG -b ${{ github.run_number }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

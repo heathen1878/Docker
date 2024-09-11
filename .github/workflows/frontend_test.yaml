@@ -10,17 +10,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: Run tests on docker image
+
+    defaults:
+      run:
+        working-directory: ./projects/production_grade_flow/frontend
+
     steps:
       - name: checkout repository
         uses: actions/checkout@v2
 
       - name: docker build
         run: |
-          cd ./projects/production_grade_flow/frontend
-          docker build -t heathen1878/testme -f dockerfile.dev .
+          docker build -t ${{ vars.DOCKER_USERNAME }}/testme -f dockerfile.dev .
 
       - name: docker login
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       - name: docker run with tests
-        run: docker run -e CI=true heathen1878/testme npm test
+        run: docker run -e CI=true ${{ vars.DOCKER_USERNAME }}/testme npm test
