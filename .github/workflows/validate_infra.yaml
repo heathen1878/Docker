@@ -209,6 +209,7 @@ jobs:
           export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}
           export ARM_SUBSCRIPTION_ID=${{ vars.ARM_SUBSCRIPTION_ID }}
           export ARM_USE_AZUREAD=true
+          export TF_VAR_docker_tag=${{ vars.DOCKER_TAG }}
           
           terraform apply --auto-approve
 
@@ -319,6 +320,7 @@ jobs:
           export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}
           export ARM_SUBSCRIPTION_ID=${{ vars.ARM_SUBSCRIPTION_ID }}
           export ARM_USE_AZUREAD=true
+          export TF_VAR_docker_tag=${{ vars.DOCKER_TAG }}
           
           terraform destroy --auto-approve
 
