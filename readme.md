@@ -214,3 +214,22 @@ This is a simple Node Js web app running as a container - see [here](./projects/
 ### Multi tier app
 
 This example uses docker compose to build the networking between in each container. See [here](./projects/multi_tier_app/readme.md)
+
+### React App
+
+This example uses Github Actions to build and test and then deploy to Docker Hub. See [here](./projects/production_grade_flow/readme.md)
+
+
+#### Build Status
+
+Tests
+
+[![Test Frontend Docker Build](https://github.com/heathen1878/Docker/actions/workflows/frontend_test.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/frontend_test.yaml)
+
+Push to Docker Hub
+
+[![Push Frontend To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml)
+
+App Service Deployment
+
+[![Deploy Infra](https://github.com/heathen1878/Docker/actions/workflows/deploy_infra.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/deploy_infra.yaml)
