@@ -5,11 +5,16 @@ on:
     branches: master
     paths:
       - '**dockerfile*'
+  workflow_dispatch:
 
 jobs:
   push_to_registry:
     runs-on: ubuntu-latest
     name: Push Frontend to Docker Hub
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
 
     steps:
       - name: checkout repository
