@@ -34,9 +34,16 @@ jobs:
       - name: docker push
         run: |
           docker image push ${{ vars.DOCKER_USERNAME }}/${{ vars.DOCKER_IMAGE_NAME }}:${{ github.run_number }}
-            
+      
+      - name: Create App Token
+        id: app_token
+        uses: actions/create-gitub-app-token@v1
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.CREATE_TOKEN_PRIVATE_KEY }}
+
       - name: Update docker tag variable
         run: |
           gh variable set DOCKER_TAG -b ${{ github.run_number }}
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.app_token.outputs.token }}
