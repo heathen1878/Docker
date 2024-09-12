@@ -44,6 +44,8 @@ resource "azurerm_linux_web_app" "this" {
       docker_image_name   = local.docker_image_name
       docker_registry_url = local.docker_registry_url
     }
+    health_check_path = "/"
+    health_check_eviction_time_in_min = 10
   }
   tags = local.tags
 }
