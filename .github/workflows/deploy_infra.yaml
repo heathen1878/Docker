@@ -8,6 +8,16 @@ on:
       - '**dockerfile*'
 
 jobs:
+  cost_infra:
+    uses: ./.github/workflows/infracost.yaml
+    with:
+      BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
+      PR_ID: ${{ github.event.pull_request.number }}
+      PR_STATUS: ${{ github.event.pull_request.merged }}
+      PR_URL: ${{ github.event.pull_request.html_url }}
+    secrets:
+      API_KEY: ${{ secrets.INFRACOST_API_KEY }}
+
   deploy_infra:
     runs-on: ubuntu-latest
     name: Deploy Infrastructure using Terraform
