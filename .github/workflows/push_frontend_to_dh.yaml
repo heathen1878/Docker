@@ -39,4 +39,4 @@ jobs:
         run: |
           gh variable set DOCKER_TAG -b ${{ github.run_number }}
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
