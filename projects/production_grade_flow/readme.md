@@ -85,19 +85,3 @@ git commit -m "Initial commit"
 git remote add origin git@github.com:{account_name}/{repo_name}.git
 git push -u origin {main_branch_name}
 ```
-
-### Pipelines
-
-Azure DevOps -> Project -> Repository -> Branch -> CI Pipeline...
-
-## Dev Phase
-
-Feature Branch -> PR -> ...
-
-## Testing Phase
-
-CI Pipeline to run tests -> ...
-
-## Production Phase
-
-Merge PR -> Main Branch...
