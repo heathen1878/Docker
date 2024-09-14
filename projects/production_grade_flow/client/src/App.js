@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import About from './about';
@@ -10,11 +9,9 @@ function App() {
     <Router>
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <Link to="/" className="App-link">Home</Link>
-          <Link to="/about" className="App-link">About</Link>
+          <Link to="/">Home</Link><Link to="/about">About</Link>
         </header>
-        <div>
+        <div className="Body">
           <Route exact path="/" component={Calc} />
           <Route path="/about" component={About} />
         </div>
