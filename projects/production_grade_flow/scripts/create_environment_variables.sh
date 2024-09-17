@@ -5,23 +5,23 @@
 
 ### Inline Functions ###
 function show_usage() {
-    warning "USAGE: source ./create_environment_variables.sh -k key-vault-name -n secret-name"
-    warning "USAGE: source ./create_environment_variables.sh -g github/account/repo -n variable-name"
+    _warning "USAGE: source ./create_environment_variables.sh -k key-vault-name -n secret-name"
+    _warning "USAGE: source ./create_environment_variables.sh -g github/account/repo -n variable-name"
 }
 
 function _warning() {
     _colour="\033[1;33m"
-    echo -e "${_colour} $*\e[0m"
+    echo -e "${_colour}$*\e[0m"
 }
 
 function _error() {
     _colour="\033[1;31m"
-    echo -e "${_colour} $*\e[0m"
+    echo -e "${_colour}$*\e[0m"
 }
 
 function _ok() {
     _colour="\033[32m"
-    echo -e "${_colour} [ok] $*\e[0m"
+    echo -e "${_colour}[ok] $*\e[0m"
 }
 
 function check_for_executable() {

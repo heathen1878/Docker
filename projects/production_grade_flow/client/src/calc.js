@@ -28,7 +28,7 @@ class Calc extends Component {
     };
 
     handleSubmit = async (event) => {
-        //event.preventDefault(); //Commented out to refresh the page after each submit.
+        event.preventDefault(); //Commented out to refresh the page after each submit.
 
         await axios.post("/api/values", {
             index: this.state.index
