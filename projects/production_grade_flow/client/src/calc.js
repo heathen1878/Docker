@@ -28,13 +28,14 @@ class Calc extends Component {
     };
 
     handleSubmit = async (event) => {
-        event.preventDefault();
+        //event.preventDefault(); //Commented out to refresh the page after each submit.
 
         await axios.post("/api/values", {
             index: this.state.index
         });
 
         this.setState({ index: "" });
+        
     }
 
     renderSeenIndexes() {   
@@ -47,7 +48,7 @@ class Calc extends Component {
         for (let key in this.state.values) {
             entries.push(
                 <div key={key}>
-                    For index {key} I calculated {this.state.values[key]}
+                    For an index of {key}, I calculated {this.state.values[key]}
                 </div>
             );
         }
@@ -60,6 +61,8 @@ class Calc extends Component {
             <div>
                 <form onSubmit={this.handleSubmit}>
                     <label>Enter your index:</label>
+                    <br />
+                    <br />
                     <input 
                         value={this.state.index}
                         onChange={event => this.setState({ index: event.target.value })}

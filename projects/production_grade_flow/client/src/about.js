@@ -8,7 +8,6 @@ export default function About() {
             <p>
                 This project is part of the <Link to="https://www.udemy.com/course/docker-and-kubernetes-the-complete-guide">Docker and Kubernetes: The Complete Guide</Link> course on Udemy.    
             </p>
-            <Link to="/">Home</Link>
         </div>
     );
 };

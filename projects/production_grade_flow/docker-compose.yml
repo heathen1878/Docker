@@ -35,6 +35,8 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
   client:
+    environment:
+      WDS_SOCKET_PORT: 0
     build:
       context: ./client
       dockerfile: dockerfile.dev
