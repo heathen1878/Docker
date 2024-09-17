@@ -52,6 +52,8 @@ const Calc = () => {
     <div>
       <form onSubmit={handleSubmit}>
         <label>Enter your index:</label>
+        <br />
+        <br />
         <input
           value={index}
           onChange={(event) => setIndex(event.target.value)}
