@@ -11,10 +11,10 @@ function App() {
         <header className="App-header">
           <Link to="/">Home</Link><Link to="/about">About</Link>
         </header>
-        <div className="Body">
-          <Route exact path="/" component={Calc} />
-          <Route path="/about" component={About} />
-        </div>
+        <Routes>
+          <Route path="/" element={<Calc />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
       </div>
     </Router>
   );
