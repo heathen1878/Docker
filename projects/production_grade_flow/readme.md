@@ -31,7 +31,7 @@ npm run test
 
 `docker compose up`
 
-The [docker-compose.yml](./docker-compose.yml) uses secrets passed from the command line. If you have to `sudo` to run docker then append `-E` to the command to pass the environment variables from your session. e.g. `sudo -E docker compose up -d`.
+The [docker-compose.yml](./docker-compose.yml) uses secrets passed from the command line. If you have to `sudo` to run docker then append `-E` to the command to pass the environment variables from your session. e.g. `sudo -E docker compose up -d`. Use [create_environment_variables.sh](./scripts/create_environment_variables.sh) to set environment variables sourced from Key Vault or Git Hub.
 
 #### Redis
 
