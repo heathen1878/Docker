@@ -66,6 +66,12 @@ resource "azurerm_container_app_environment" "this" {
   resource_group_name                = azurerm_resource_group.this.name
   infrastructure_resource_group_name = local.cae_infra_resource_group_name
   infrastructure_subnet_id           = azurerm_subnet.cae.id
+  workload_profile {
+    name = "fibonacci"
+    workload_profile_type = "consumption"
+    minimum_count = 1
+    maximum_count = 2
+  }
 }
 
 resource "azurerm_container_app" "worker" {
