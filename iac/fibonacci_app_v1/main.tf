@@ -7,9 +7,9 @@ locals {
   api_container_app              = format("ca-api-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
   client_container_app           = format("ca-client-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
   worker_container_app           = format("ca-worker-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
-  api_docker_image = format("index.docker.io/heathen1878/api:%s", var.docker_image_tag)
-  client_docker_image = format("index.docker.io/heathen1878/client:%s", var.docker_image_tag)
-  worker_docker_image = format("index.docker.io/heathen1878/worker:%s", var.docker_image_tag)
+  api_docker_image               = format("index.docker.io/heathen1878/api:%s", var.docker_image_tag)
+  client_docker_image            = format("index.docker.io/heathen1878/client:%s", var.docker_image_tag)
+  worker_docker_image            = format("index.docker.io/heathen1878/worker:%s", var.docker_image_tag)
   redis_cache                    = format("redis-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
   postgresql                     = format("psql-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
   name                           = "fibonacci"
@@ -69,64 +69,64 @@ resource "azurerm_container_app_environment" "this" {
 }
 
 resource "azurerm_container_app" "worker" {
-  name = local.worker_container_app
+  name                         = local.worker_container_app
   container_app_environment_id = azurerm_container_app_environment.this.id
-  resource_group_name = azurerm_resource_group.this.name
-  revision_mode = "single"
+  resource_group_name          = azurerm_resource_group.this.name
+  revision_mode                = "single"
 
   template {
     container {
-      name = "worker"
-      image = ""
-      cpu = "0.5"
+      name   = "worker"
+      image  = ""
+      cpu    = "0.5"
       memory = "1.5"
     }
   }
 }
 
 resource "azurerm_container_app" "worker" {
-  name = local.worker_container_app
+  name                         = local.worker_container_app
   container_app_environment_id = azurerm_container_app_environment.this.id
-  resource_group_name = azurerm_resource_group.this.name
-  revision_mode = "single"
+  resource_group_name          = azurerm_resource_group.this.name
+  revision_mode                = "single"
 
   template {
     container {
-      name = "worker"
-      image = local.worker_docker_image
-      cpu = "0.5"
+      name   = "worker"
+      image  = local.worker_docker_image
+      cpu    = "0.5"
       memory = "1.5"
     }
   }
 }
 
 resource "azurerm_container_app" "api" {
-  name = local.worker_container_app
+  name                         = local.worker_container_app
   container_app_environment_id = azurerm_container_app_environment.this.id
-  resource_group_name = azurerm_resource_group.this.name
-  revision_mode = "single"
+  resource_group_name          = azurerm_resource_group.this.name
+  revision_mode                = "single"
 
   template {
     container {
-      name = "worker"
-      image = local.api_docker_image
-      cpu = "0.5"
+      name   = "worker"
+      image  = local.api_docker_image
+      cpu    = "0.5"
       memory = "1.5"
     }
   }
 }
 
 resource "azurerm_container_app" "client" {
-  name = local.worker_container_app
+  name                         = local.worker_container_app
   container_app_environment_id = azurerm_container_app_environment.this.id
-  resource_group_name = azurerm_resource_group.this.name
-  revision_mode = "single"
+  resource_group_name          = azurerm_resource_group.this.name
+  revision_mode                = "single"
 
   template {
     container {
-      name = "worker"
-      image = local.client_docker_image
-      cpu = "0.5"
+      name   = "worker"
+      image  = local.client_docker_image
+      cpu    = "0.5"
       memory = "1.5"
     }
   }
