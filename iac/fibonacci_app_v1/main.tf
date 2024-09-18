@@ -68,7 +68,7 @@ resource "azurerm_container_app_environment" "this" {
   infrastructure_subnet_id           = azurerm_subnet.cae.id
   workload_profile {
     name = "fibonacci"
-    workload_profile_type = "consumption"
+    workload_profile_type = "Consumption"
     minimum_count = 1
     maximum_count = 2
   }
