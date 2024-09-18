@@ -77,22 +77,6 @@ resource "azurerm_container_app" "worker" {
   template {
     container {
       name   = "worker"
-      image  = ""
-      cpu    = "0.5"
-      memory = "1.5"
-    }
-  }
-}
-
-resource "azurerm_container_app" "worker" {
-  name                         = local.worker_container_app
-  container_app_environment_id = azurerm_container_app_environment.this.id
-  resource_group_name          = azurerm_resource_group.this.name
-  revision_mode                = "single"
-
-  template {
-    container {
-      name   = "worker"
       image  = local.worker_docker_image
       cpu    = "0.5"
       memory = "1.5"
@@ -101,14 +85,14 @@ resource "azurerm_container_app" "worker" {
 }
 
 resource "azurerm_container_app" "api" {
-  name                         = local.worker_container_app
+  name                         = local.api_container_app
   container_app_environment_id = azurerm_container_app_environment.this.id
   resource_group_name          = azurerm_resource_group.this.name
   revision_mode                = "single"
 
   template {
     container {
-      name   = "worker"
+      name   = "api"
       image  = local.api_docker_image
       cpu    = "0.5"
       memory = "1.5"
@@ -117,14 +101,14 @@ resource "azurerm_container_app" "api" {
 }
 
 resource "azurerm_container_app" "client" {
-  name                         = local.worker_container_app
+  name                         = local.client_container_app
   container_app_environment_id = azurerm_container_app_environment.this.id
   resource_group_name          = azurerm_resource_group.this.name
   revision_mode                = "single"
 
   template {
     container {
-      name   = "worker"
+      name   = "client"
       image  = local.client_docker_image
       cpu    = "0.5"
       memory = "1.5"
