@@ -18,7 +18,6 @@ locals {
   tags = {
     managedby   = "Terraform"
     pipeline    = "Github Actions"
-    service     = "Frontend App"
     environment = var.environment
   }
 
@@ -40,6 +39,11 @@ resource "azurerm_virtual_network" "this" {
   address_space = [
     "192.168.0.0/16"
   ]
+  tags = merge(local.tags,
+    {
+      service = "Networking"
+    }
+  )
 }
 
 resource "azurerm_subnet" "cae" {
@@ -72,13 +76,18 @@ resource "azurerm_container_app_environment" "this" {
     minimum_count = 1
     maximum_count = 2
   }
+  tags = merge(local.tags,
+    {
+      service = "Container App Environment"
+    }
+  )
 }
 
 resource "azurerm_container_app" "worker" {
   name                         = local.worker_container_app
   container_app_environment_id = azurerm_container_app_environment.this.id
   resource_group_name          = azurerm_resource_group.this.name
-  revision_mode                = "single"
+  revision_mode                = "Single"
 
   template {
     container {
@@ -88,13 +97,18 @@ resource "azurerm_container_app" "worker" {
       memory = "1.5"
     }
   }
+  tags = merge(local.tags,
+    {
+      service = "Worker"
+    }
+  )
 }
 
 resource "azurerm_container_app" "api" {
   name                         = local.api_container_app
   container_app_environment_id = azurerm_container_app_environment.this.id
   resource_group_name          = azurerm_resource_group.this.name
-  revision_mode                = "single"
+  revision_mode                = "Single"
 
   template {
     container {
@@ -104,13 +118,18 @@ resource "azurerm_container_app" "api" {
       memory = "1.5"
     }
   }
+  tags = merge(local.tags,
+    {
+      service = "Api"
+    }
+  )
 }
 
 resource "azurerm_container_app" "client" {
   name                         = local.client_container_app
   container_app_environment_id = azurerm_container_app_environment.this.id
   resource_group_name          = azurerm_resource_group.this.name
-  revision_mode                = "single"
+  revision_mode                = "Single"
 
   template {
     container {
@@ -120,4 +139,9 @@ resource "azurerm_container_app" "client" {
       memory = "1.5"
     }
   }
+  tags = merge(local.tags,
+    {
+      service = "Client"
+    }
+  ) 
 }
