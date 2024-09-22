@@ -153,8 +153,10 @@ jobs:
   plan_fibonacci_v1:
     runs-on: ubuntu-latest
     name: Plan Fibonacci V1 using Terraform
-    needs: cost_infra
-
+    needs: [
+      cost_infra, plan_frontend
+    ]
+    
     defaults:
       run:
         working-directory: ./iac/fibonacci_app_v1
@@ -285,7 +287,10 @@ jobs:
   deploy_infra_to_sandbox:
     runs-on: ubuntu-latest
     name: Deploy Infrastructure using Terraform
-    needs: plan_frontend
+    needs: [
+      plan_frontend,
+      plan_fibonacci_v1
+    ]
 
     defaults:
       run:
