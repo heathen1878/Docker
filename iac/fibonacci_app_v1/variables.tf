@@ -21,3 +21,11 @@ variable "docker_username" {
   default     = "heathen1878"
   type        = string
 }
+
+variable "psql_admin_username" {
+
+}
+
+variable "psql_admin_password" {
+
+}
