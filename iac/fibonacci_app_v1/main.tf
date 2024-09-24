@@ -322,7 +322,7 @@ resource "azurerm_container_app" "nginx" {
     traffic_weight {
       latest_revision = true
       percentage      = 100
-      revision_suffix = "primary"
+      #revision_suffix = "primary"
     }
   }
 
