@@ -1,10 +1,10 @@
-name: Validate Infrastructure
+name: Validate Fibonacci Infrastructure
 on:
   pull_request: 
     branches:
       - '*'
     paths:
-      - 'iac/frontend_app_service/*.tf'
+      - 'iac/fibonacci_app_v1/*.tf'
   workflow_dispatch:
 
 jobs:
@@ -71,8 +71,8 @@ jobs:
           terraform init \
           -upgrade \
           -input=false \
-          -backend-config="storage_account_name=${{ vars.STATE_STORAGE_ACCOUNT }}" \
-          -backend-config="container_name=${{ vars.STATE_STORAGE_CONTAINER }}" \
+          -backend-config="storage_account_name=${{ vars.FBV1_STATE_STORAGE_ACCOUNT }}" \
+          -backend-config="container_name=${{ vars.FBV1_STATE_STORAGE_CONTAINER }}" \
           -backend-config="key=frontend.tfstate"
      
       - name: Terraform Validate

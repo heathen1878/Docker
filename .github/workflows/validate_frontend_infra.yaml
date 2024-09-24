@@ -1,4 +1,4 @@
-name: Validate Infrastructure
+name: Validate Frontend Infrastructure
 on:
   pull_request: 
     branches:
