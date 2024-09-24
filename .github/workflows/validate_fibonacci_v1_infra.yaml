@@ -18,143 +18,11 @@ jobs:
     secrets:
       API_KEY: ${{ secrets.INFRACOST_API_KEY }}
 
-  plan_frontend:
-    runs-on: ubuntu-latest
-    name: Plan Frontend using Terraform
-    needs: cost_infra
-
-    defaults:
-      run:
-        working-directory: ./iac/frontend_app_service
-
-    steps:
-      - name: checkout repository
-        uses: actions/checkout@v3
-
-      - name: auth
-        uses: azure/login@v2
-        with:
-          creds: '{"clientId": "${{ secrets.ARM_CLIENT_ID }}", "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}", "tenantId": "${{ secrets.ARM_TENANT_ID }}", "subscriptionId": "${{ vars.ARM_SUBSCRIPTION_ID }}"}'
-
-      - name: get runner ip
-        id: runner_ip
-        run: |
-          IP_ADDR=$(curl -s https://ifconfig.me/ip)
-          echo "IPADDR=$IP_ADDR" >> $GITHUB_OUTPUT
-
-      - name: modify state storage acl
-        run: |
-          az storage account network-rule add --account-name ${{ vars.FBV1_STATE_STORAGE_ACCOUNT }} --ip-address ${{ steps.runner_ip.outputs.IPADDR }} --subscription ${{ vars.ARM_SUBSCRIPTION_ID }}  > /dev/null 2>&1
-          echo "Pausing for 60 seconds to ensure the ACL has been set..."
-          sleep 60
-
-      - name: install terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: ${{ vars.TERRAFORM_VERSION }}
-     
-      - name: Terraform fmt
-        id: fmt
-        run: terraform fmt -check
-        continue-on-error: true
-
-      - name: terraform init
-        id: init
-        run: |
-          # export variables as environment variables
-          export ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}
-          export ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}
-          export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}
-          export ARM_SUBSCRIPTION_ID=${{ vars.ARM_SUBSCRIPTION_ID }}
-          export ARM_USE_AZUREAD=true
-          
-          terraform init \
-          -upgrade \
-          -input=false \
-          -backend-config="storage_account_name=${{ vars.FBV1_STATE_STORAGE_ACCOUNT }}" \
-          -backend-config="container_name=${{ vars.FBV1_STATE_STORAGE_CONTAINER }}" \
-          -backend-config="key=${{ vars.FBV1_STATE_FILE_NAME }}"
-     
-      - name: Terraform Validate
-        id: validate
-        run: terraform validate -no-color
-
-      - name: terraform plan
-        id: plan
-        run: |
-          # export variables as environment variables
-          export ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}
-          export ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}
-          export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}
-          export ARM_SUBSCRIPTION_ID=${{ vars.ARM_SUBSCRIPTION_ID }}
-          export ARM_USE_AZUREAD=true
-          export TF_VAR_docker_image_tag=${{ vars.DOCKER_TAG }}
-
-          terraform plan -no-color -out out.tfplan
-
-          terraform show -no-color out.tfplan > plan.md
-
-          sed -i '3 i\```' plan.md
-          echo '```' >> plan.md
-
-          cat plan.md > $GITHUB_STEP_SUMMARY
-
-      - name: Add Comment to PR
-        uses: actions/github-script@v7
-        env:
-          PLAN: ${{ steps.plan.outputs.stdout }}
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-            <details><summary>Formatting Output</summary>
-
-            \`\`\`\n
-            ${{ steps.fmt.outputs.stdout }}
-            \`\`\`
-
-            </details>
-
-            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
-            <details><summary>Validation Output</summary>
-
-            \`\`\`\n
-            ${{ steps.validate.outputs.stdout }}
-            \`\`\`
-
-            </details>
-                        
-            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-
-            <details><summary>Show Plan</summary>
-
-            \`\`\`\n
-            ${process.env.PLAN}
-            \`\`\`
-
-            </details>
-
-            Pusher: @${{ github.actor }}
-            Action: ${{ github.event_name }}
-            Workflow: ${{ github.workflow }}`;
-
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
-
-      - name: modify state storage acl - clean up
-        if: always()
-        run: |
-          az storage account network-rule remove --account-name ${{ vars.FBV1_STATE_STORAGE_ACCOUNT }} --ip-address ${{ steps.runner_ip.outputs.IPADDR }}  --subscription ${{ vars.ARM_SUBSCRIPTION_ID }}  > /dev/null 2>&1
-
   plan_fibonacci_v1:
     runs-on: ubuntu-latest
     name: Plan Fibonacci V1 using Terraform
     needs: [
-      cost_infra, plan_frontend
+      cost_infra
     ]
     
     defaults:
@@ -288,13 +156,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy Infrastructure using Terraform
     needs: [
-      plan_frontend,
       plan_fibonacci_v1
     ]
 
     defaults:
       run:
-        working-directory: ./iac/frontend_app_service
+        working-directory: ./iac/fibonacci_app_v1
 
     steps:
       - name: checkout repository
@@ -313,7 +180,7 @@ jobs:
 
       - name: modify state storage acl
         run: |
-          az storage account network-rule add --account-name ${{ vars.STATE_STORAGE_ACCOUNT }} --ip-address ${{ steps.runner_ip.outputs.IPADDR }} --subscription ${{ vars.ARM_SUBSCRIPTION_ID }}  > /dev/null 2>&1
+          az storage account network-rule add --account-name ${{ vars.FBV1_STATE_STORAGE_ACCOUNT }} --ip-address ${{ steps.runner_ip.outputs.IPADDR }} --subscription ${{ vars.ARM_SUBSCRIPTION_ID }}  > /dev/null 2>&1
           echo "Pausing for 60 seconds to ensure the ACL has been set..."
           sleep 60
 
@@ -381,7 +248,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./iac/frontend_app_service
+        working-directory: ./iac/fibonacci_app_v1
     
     steps:
       - name: Add Comment to PR
@@ -405,7 +272,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./iac/frontend_app_service
+        working-directory: ./iac/fibonacci_app_v1
 
     steps:
       - name: checkout repository
@@ -424,7 +291,7 @@ jobs:
 
       - name: modify state storage acl
         run: |
-          az storage account network-rule add --account-name ${{ vars.STATE_STORAGE_ACCOUNT }} --ip-address ${{ steps.runner_ip.outputs.IPADDR }} --subscription ${{ vars.ARM_SUBSCRIPTION_ID }}  > /dev/null 2>&1
+          az storage account network-rule add --account-name ${{ vars.FBV1_STATE_STORAGE_ACCOUNT }} --ip-address ${{ steps.runner_ip.outputs.IPADDR }} --subscription ${{ vars.ARM_SUBSCRIPTION_ID }}  > /dev/null 2>&1
           echo "Pausing for 60 seconds to ensure the ACL has been set..."
           sleep 60
 
