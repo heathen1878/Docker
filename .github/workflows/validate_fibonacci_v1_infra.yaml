@@ -91,6 +91,8 @@ jobs:
           export ARM_SUBSCRIPTION_ID=${{ vars.ARM_SUBSCRIPTION_ID }}
           export ARM_USE_AZUREAD=true
           export TF_VAR_docker_image_tag=${{ vars.DOCKER_TAG }}
+          export TF_VAR_psql_admin_password=${{ secrets.PSQL_ADMIN_PASSWORD }}
+          export TF_VAR_psql_admin_username=${{ secrets.PSQL_ADMIN_USERNAME }}
 
           terraform plan -no-color -out out.tfplan
 
@@ -216,6 +218,8 @@ jobs:
           export ARM_SUBSCRIPTION_ID=${{ vars.ARM_SUBSCRIPTION_ID }}
           export ARM_USE_AZUREAD=true
           export TF_VAR_docker_image_tag=${{ vars.DOCKER_TAG }}
+          export TF_VAR_psql_admin_password=${{ secrets.PSQL_ADMIN_PASSWORD }}
+          export TF_VAR_psql_admin_username=${{ secrets.PSQL_ADMIN_USERNAME }}
           
           terraform apply --auto-approve
 
@@ -327,6 +331,8 @@ jobs:
           export ARM_SUBSCRIPTION_ID=${{ vars.ARM_SUBSCRIPTION_ID }}
           export ARM_USE_AZUREAD=true
           export TF_VAR_docker_image_tag=${{ vars.DOCKER_TAG }}
+          export TF_VAR_psql_admin_password=${{ secrets.PSQL_ADMIN_PASSWORD }}
+          export TF_VAR_psql_admin_username=${{ secrets.PSQL_ADMIN_USERNAME }}
           
           terraform destroy --auto-approve
 

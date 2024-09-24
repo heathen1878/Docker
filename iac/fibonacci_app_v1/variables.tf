@@ -23,9 +23,11 @@ variable "docker_username" {
 }
 
 variable "psql_admin_username" {
-
+  description = "PostgreSQL admin username"
+  type        = string
 }
 
 variable "psql_admin_password" {
-
+  description = "PostgreSQL admin password"
+  type        = string
 }
