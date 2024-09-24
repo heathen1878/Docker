@@ -18,7 +18,7 @@ locals {
   postgresql                     = format("psql-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
   name                           = "fb"
   location                       = "uksouth"
-  location_short_code = "uks"
+  location_short_code            = "uks"
   random                         = random_id.this.hex
   tags = {
     managedby   = "Terraform"
@@ -209,7 +209,7 @@ resource "azurerm_container_app" "worker" {
       name   = "worker"
       image  = local.worker_docker_image
       cpu    = "1.0"
-      memory = "2.0"
+      memory = "2.0Gi"
     }
   }
   tags = merge(local.tags,
@@ -230,7 +230,7 @@ resource "azurerm_container_app" "api" {
     target_port                = 5000
 
     traffic_weight {
-            latest_revision = true
+      latest_revision = true
       percentage      = 100
       #revision_suffix = "primary"
     }
@@ -276,7 +276,7 @@ resource "azurerm_container_app" "api" {
       name   = "api"
       image  = local.api_docker_image
       cpu    = "0.5"
-      memory = "1.5"
+      memory = "1.5Gi"
     }
   }
   tags = merge(local.tags,
@@ -297,7 +297,7 @@ resource "azurerm_container_app" "client" {
     target_port                = 3000
 
     traffic_weight {
-            latest_revision = true
+      latest_revision = true
       percentage      = 100
       #revision_suffix = "primary"
     }
@@ -308,7 +308,7 @@ resource "azurerm_container_app" "client" {
       name   = "client"
       image  = local.client_docker_image
       cpu    = "0.5"
-      memory = "1.5"
+      memory = "1.5Gi"
     }
   }
   tags = merge(local.tags,
@@ -341,7 +341,7 @@ resource "azurerm_container_app" "nginx" {
       name   = "nginx"
       image  = local.nginx_docker_image
       cpu    = "1.0"
-      memory = "1.5"
+      memory = "1.5Gi"
     }
   }
   tags = merge(local.tags,
