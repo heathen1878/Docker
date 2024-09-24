@@ -107,7 +107,7 @@ resource "azurerm_private_dns_zone" "psql" {
 }
 
 resource "azurerm_private_dns_zone" "redis" {
-  name                = "privatelink."
+  name                = "privatelink.redis.cache.windows.net"
   resource_group_name = azurerm_resource_group.this.name
 }
 
@@ -115,6 +115,13 @@ resource "azurerm_private_dns_zone_virtual_network_link" "psql" {
   name                  = "psql"
   resource_group_name   = azurerm_resource_group.this.name
   private_dns_zone_name = azurerm_private_dns_zone.psql.name
+  virtual_network_id    = azurerm_virtual_network.this.id
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "psql" {
+  name                  = "redis"
+  resource_group_name   = azurerm_resource_group.this.name
+  private_dns_zone_name = azurerm_private_dns_zone.redis.name
   virtual_network_id    = azurerm_virtual_network.this.id
 }
 
@@ -213,7 +220,7 @@ resource "azurerm_container_app" "api" {
     target_port                = 5000
 
     traffic_weight {
-      percentage = 100
+      percentage      = 100
       revision_suffix = "primary"
     }
   }
@@ -279,7 +286,7 @@ resource "azurerm_container_app" "client" {
     target_port                = 3000
 
     traffic_weight {
-      percentage = 100
+      percentage      = 100
       revision_suffix = "primary"
     }
   }
@@ -311,7 +318,7 @@ resource "azurerm_container_app" "nginx" {
     target_port                = 80
 
     traffic_weight {
-      percentage = 100
+      percentage      = 100
       revision_suffix = "primary"
     }
   }
