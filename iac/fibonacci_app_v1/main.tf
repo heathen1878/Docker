@@ -61,6 +61,14 @@ resource "azurerm_subnet" "cae" {
   address_prefixes = [
     "192.168.0.0/21"
   ]
+
+  delegation {
+    name = "cae"
+    service_delegation {
+      name    = "Microsoft.App/environments"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
 }
 
 resource "azurerm_subnet" "pe" {
