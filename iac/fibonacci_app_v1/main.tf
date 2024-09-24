@@ -222,8 +222,9 @@ resource "azurerm_container_app" "api" {
     target_port                = 5000
 
     traffic_weight {
+            latest_revision = true
       percentage      = 100
-      revision_suffix = "primary"
+      #revision_suffix = "primary"
     }
   }
 
@@ -288,8 +289,9 @@ resource "azurerm_container_app" "client" {
     target_port                = 3000
 
     traffic_weight {
+            latest_revision = true
       percentage      = 100
-      revision_suffix = "primary"
+      #revision_suffix = "primary"
     }
   }
 
