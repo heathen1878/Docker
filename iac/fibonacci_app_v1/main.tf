@@ -181,7 +181,7 @@ resource "azurerm_container_app" "worker" {
     container {
       env {
         name  = "REDIS_HOST"
-        value = azurerm_redis_cache.this.host
+        value = azurerm_redis_cache.this.hostname
       }
 
       env {
@@ -221,7 +221,7 @@ resource "azurerm_container_app" "api" {
     container {
       env {
         name  = "REDIS_HOST"
-        value = azurerm_redis_cache.this.host
+        value = azurerm_redis_cache.this.hostname
       }
 
       env {
