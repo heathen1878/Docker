@@ -214,6 +214,7 @@ resource "azurerm_container_app" "api" {
 
     traffic_weight {
       percentage = 100
+      revision_suffix = "primary"
     }
   }
 
@@ -279,6 +280,7 @@ resource "azurerm_container_app" "client" {
 
     traffic_weight {
       percentage = 100
+      revision_suffix = "primary"
     }
   }
 
@@ -310,6 +312,7 @@ resource "azurerm_container_app" "nginx" {
 
     traffic_weight {
       percentage = 100
+      revision_suffix = "primary"
     }
   }
 
