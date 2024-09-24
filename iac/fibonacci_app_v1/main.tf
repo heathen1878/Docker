@@ -252,10 +252,10 @@ resource "azurerm_container_app" "api" {
         value = var.psql_admin_username
       }
 
-      env {
-        name  = "PGHOST"
-        value = azurerm_postgresql_flexible_server.this.fqdn
-      }
+      # env {
+      #   name  = "PGHOST"
+      #   value = azurerm_postgresql_flexible_server.this.fqdn
+      # }
 
       env {
         name  = "PGDATABASE"
