@@ -1,23 +1,24 @@
 locals {
   # define some local variables
-  resource_group_name            = format("rg-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
-  virtual_network_name           = format("vnet-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
-  cae_infra_resource_group_name  = format("rg-cae-infra-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
-  postgresql_server_name         = format("psql-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
-  redis_cache_name               = format("redis-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
-  container_app_environment_name = format("cae-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
-  api_container_app              = format("ca-api-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
-  client_container_app           = format("ca-client-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
-  nginx_container_app            = format("ca-nginx-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
-  worker_container_app           = format("ca-worker-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
+  resource_group_name            = format("rg-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
+  virtual_network_name           = format("vnet-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
+  cae_infra_resource_group_name  = format("rg-cae-infra-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
+  postgresql_server_name         = format("psql-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
+  redis_cache_name               = format("redis-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
+  container_app_environment_name = format("cae-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
+  api_container_app              = format("ca-api-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
+  client_container_app           = format("ca-client-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
+  nginx_container_app            = format("ca-nginx-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
+  worker_container_app           = format("ca-worker-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
   api_docker_image               = format("index.docker.io/heathen1878/api:%s", var.docker_image_tag)
   client_docker_image            = format("index.docker.io/heathen1878/client:%s", var.docker_image_tag)
   nginx_docker_image             = format("index.docker.io/heathen1878/nginx:%s", var.docker_image_tag)
   worker_docker_image            = format("index.docker.io/heathen1878/worker:%s", var.docker_image_tag)
-  redis_cache                    = format("redis-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
-  postgresql                     = format("psql-%s-%s-%s-%s", local.name, var.environment, local.location, local.random)
-  name                           = "fibonacci"
+  redis_cache                    = format("redis-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
+  postgresql                     = format("psql-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
+  name                           = "fb"
   location                       = "uksouth"
+  location_short_code = "uks"
   random                         = random_id.this.hex
   tags = {
     managedby   = "Terraform"
