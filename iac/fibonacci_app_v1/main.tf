@@ -139,7 +139,7 @@ resource "azurerm_postgresql_flexible_server" "this" {
   storage_mb   = 32768
   storage_tier = "P30"
 
-  sku_name = "GP_Standard_D4s_v3"
+  sku_name = "B_Standard_B1ms"
   depends_on = [
     azurerm_private_dns_zone_virtual_network_link.psql
   ]
@@ -150,8 +150,10 @@ resource "azurerm_redis_cache" "this" {
   location            = local.location
   resource_group_name = azurerm_resource_group.this.name
   capacity            = 1
-  family              = "P"
-  sku_name            = "Premium"
+  family              = "C"
+  sku_name            = "Basic"
+  # family              = "P"
+  # sku_name            = "Premium"
   minimum_tls_version = "1.2"
   subnet_id           = azurerm_subnet.redis.id
 
@@ -318,6 +320,7 @@ resource "azurerm_container_app" "nginx" {
     target_port                = 80
 
     traffic_weight {
+      latest_revision = true
       percentage      = 100
       revision_suffix = "primary"
     }
