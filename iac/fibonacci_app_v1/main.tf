@@ -133,25 +133,24 @@ resource "azurerm_private_dns_zone_virtual_network_link" "redis" {
   virtual_network_id    = azurerm_virtual_network.this.id
 }
 
-resource "azurerm_postgresql_flexible_server" "this" {
-  name                          = local.postgresql_server_name
-  resource_group_name           = azurerm_resource_group.this.name
-  location                      = local.location
-  version                       = "12"
-  delegated_subnet_id           = azurerm_subnet.psql.id
-  private_dns_zone_id           = azurerm_private_dns_zone.psql.id
-  public_network_access_enabled = false
-  administrator_login           = var.psql_admin_username
-  administrator_password        = var.psql_admin_password
+# resource "azurerm_postgresql_flexible_server" "this" {
+#   name                          = local.postgresql_server_name
+#   resource_group_name           = azurerm_resource_group.this.name
+#   location                      = local.location
+#   version                       = "12"
+#   delegated_subnet_id           = azurerm_subnet.psql.id
+#   private_dns_zone_id           = azurerm_private_dns_zone.psql.id
+#   public_network_access_enabled = false
+#   administrator_login           = var.psql_admin_username
+#   administrator_password        = var.psql_admin_password
+#   storage_mb   = 32768
+#   storage_tier = "P30"
+#   sku_name = "B_Standard_B1ms"
 
-  storage_mb   = 32768
-  storage_tier = "P30"
-
-  sku_name = "B_Standard_B1ms"
-  depends_on = [
-    azurerm_private_dns_zone_virtual_network_link.psql
-  ]
-}
+#   depends_on = [
+#     azurerm_private_dns_zone_virtual_network_link.psql
+#   ]
+# }
 
 resource "azurerm_redis_cache" "this" {
   name                = local.redis_cache_name
@@ -163,7 +162,7 @@ resource "azurerm_redis_cache" "this" {
   # family              = "P"
   # sku_name            = "Premium"
   minimum_tls_version = "1.2"
-  subnet_id           = azurerm_subnet.redis.id
+  #subnet_id           = azurerm_subnet.redis.id
 
   redis_configuration {
   }
@@ -176,7 +175,7 @@ resource "azurerm_container_app_environment" "this" {
   infrastructure_resource_group_name = local.cae_infra_resource_group_name
   infrastructure_subnet_id           = azurerm_subnet.cae.id
   workload_profile {
-    name                  = "fibonacci"
+    name                  = "Consumption"
     workload_profile_type = "Consumption"
     minimum_count         = 1
     maximum_count         = 2
