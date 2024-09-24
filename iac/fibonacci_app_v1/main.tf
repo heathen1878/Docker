@@ -10,10 +10,10 @@ locals {
   client_container_app           = format("ca-client-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
   nginx_container_app            = format("ca-nginx-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
   worker_container_app           = format("ca-worker-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
-  api_docker_image               = format("index.docker.io/heathen1878/api:%s", var.docker_image_tag)
-  client_docker_image            = format("index.docker.io/heathen1878/client:%s", var.docker_image_tag)
-  nginx_docker_image             = format("index.docker.io/heathen1878/nginx:%s", var.docker_image_tag)
-  worker_docker_image            = format("index.docker.io/heathen1878/worker:%s", var.docker_image_tag)
+  api_docker_image               = format("index.docker.io/heathen1878/frontend:%s", var.docker_image_tag)#format("index.docker.io/heathen1878/api:%s", var.docker_image_tag)
+  client_docker_image            = format("index.docker.io/heathen1878/frontend:%s", var.docker_image_tag)#format("index.docker.io/heathen1878/client:%s", var.docker_image_tag)
+  nginx_docker_image             = format("index.docker.io/heathen1878/frontend:%s", var.docker_image_tag)#format("index.docker.io/heathen1878/nginx:%s", var.docker_image_tag)
+  worker_docker_image            = format("index.docker.io/heathen1878/frontend:%s", var.docker_image_tag)#format("index.docker.io/heathen1878/worker:%s", var.docker_image_tag)
   redis_cache                    = format("redis-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
   postgresql                     = format("psql-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
   name                           = "fb"
@@ -67,7 +67,7 @@ resource "azurerm_subnet" "cae" {
     name = "cae"
     service_delegation {
       name    = "Microsoft.App/environments"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
     }
   }
 }
@@ -96,7 +96,7 @@ resource "azurerm_subnet" "psql" {
     name = "psql"
     service_delegation {
       name    = "Microsoft.DBforPostgreSQL/flexibleServers"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
     }
   }
 }
@@ -134,24 +134,24 @@ resource "azurerm_private_dns_zone_virtual_network_link" "redis" {
   virtual_network_id    = azurerm_virtual_network.this.id
 }
 
-# resource "azurerm_postgresql_flexible_server" "this" {
-#   name                          = local.postgresql_server_name
-#   resource_group_name           = azurerm_resource_group.this.name
-#   location                      = local.location
-#   version                       = "12"
-#   delegated_subnet_id           = azurerm_subnet.psql.id
-#   private_dns_zone_id           = azurerm_private_dns_zone.psql.id
-#   public_network_access_enabled = false
-#   administrator_login           = var.psql_admin_username
-#   administrator_password        = var.psql_admin_password
-#   storage_mb   = 32768
-#   storage_tier = "P30"
-#   sku_name = "B_Standard_B1ms"
+resource "azurerm_postgresql_flexible_server" "this" {
+  name                          = local.postgresql_server_name
+  resource_group_name           = azurerm_resource_group.this.name
+  location                      = local.location
+  version                       = "12"
+  delegated_subnet_id           = azurerm_subnet.psql.id
+  private_dns_zone_id           = azurerm_private_dns_zone.psql.id
+  public_network_access_enabled = false
+  administrator_login           = var.psql_admin_username
+  administrator_password        = var.psql_admin_password
+  storage_mb   = 32768
+  storage_tier = "P30"
+  sku_name = "B_Standard_B1ms"
 
-#   depends_on = [
-#     azurerm_private_dns_zone_virtual_network_link.psql
-#   ]
-# }
+  depends_on = [
+    azurerm_private_dns_zone_virtual_network_link.psql
+  ]
+}
 
 resource "azurerm_redis_cache" "this" {
   name                = local.redis_cache_name
@@ -253,10 +253,10 @@ resource "azurerm_container_app" "api" {
         value = var.psql_admin_username
       }
 
-      # env {
-      #   name  = "PGHOST"
-      #   value = azurerm_postgresql_flexible_server.this.fqdn
-      # }
+      env {
+        name  = "PGHOST"
+        value = azurerm_postgresql_flexible_server.this.fqdn
+      }
 
       env {
         name  = "PGDATABASE"
@@ -275,7 +275,7 @@ resource "azurerm_container_app" "api" {
 
       name   = "api"
       image  = local.api_docker_image
-      cpu    = "0.5"
+      cpu    = "0.75"
       memory = "1.5Gi"
     }
   }
@@ -307,7 +307,7 @@ resource "azurerm_container_app" "client" {
     container {
       name   = "client"
       image  = local.client_docker_image
-      cpu    = "0.5"
+      cpu    = "0.75"
       memory = "1.5Gi"
     }
   }
@@ -341,7 +341,7 @@ resource "azurerm_container_app" "nginx" {
       name   = "nginx"
       image  = local.nginx_docker_image
       cpu    = "1.0"
-      memory = "1.5Gi"
+      memory = "2.0Gi"
     }
   }
   tags = merge(local.tags,
