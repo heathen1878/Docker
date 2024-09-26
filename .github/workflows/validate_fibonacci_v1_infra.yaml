@@ -10,7 +10,7 @@ on:
 jobs:
   push_sandbox_images_to_registry:
     runs-on: ubuntu-latest
-    name: Push Frontend to Docker Hub
+    name: Push Images to Docker Hub
     permissions:
       contents: write
       pull-requests: write
@@ -30,22 +30,30 @@ jobs:
         run: |
           cd ./projects/production_grade_flow/api
           docker build -t ${{ vars.DOCKER_USERNAME }}/api:sbx -f dockerfile .
+          sleep 5
 
-          cd ./projects/production_grade_flow/client
+          cd ../client
           docker build -t ${{ vars.DOCKER_USERNAME }}/client:sbx -f dockerfile .
+          sleep 5
 
-          cd ./projects/production_grade_flow/nginx
+          cd ../nginx
           docker build -t ${{ vars.DOCKER_USERNAME }}/nginx:sbx -f dockerfile .
+          sleep 5
 
-          cd ./projects/production_grade_flow/worker
+          cd ../worker
           docker build -t ${{ vars.DOCKER_USERNAME }}/worker:sbx -f dockerfile .
-
   
       - name: docker push
         run: |
           docker image push ${{ vars.DOCKER_USERNAME }}/api:sbx
+          sleep 5
+          
           docker image push ${{ vars.DOCKER_USERNAME }}/client:sbx
+          sleep 5
+
           docker image push ${{ vars.DOCKER_USERNAME }}/nginx:sbx
+          sleep 5
+
           docker image push ${{ vars.DOCKER_USERNAME }}/worker:sbx
 
   cost_infra:
