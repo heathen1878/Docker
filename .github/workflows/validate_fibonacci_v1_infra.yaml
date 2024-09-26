@@ -8,6 +8,46 @@ on:
   workflow_dispatch:
 
 jobs:
+  push_sandbox_images_to_registry:
+    runs-on: ubuntu-latest
+    name: Push Frontend to Docker Hub
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: docker build
+        run: |
+          cd ./projects/production_grade_flow/api
+          docker build -t ${{ vars.DOCKER_USERNAME }}/api:sbx -f dockerfile .
+
+          cd ./projects/production_grade_flow/client
+          docker build -t ${{ vars.DOCKER_USERNAME }}/client:sbx -f dockerfile .
+
+          cd ./projects/production_grade_flow/nginx
+          docker build -t ${{ vars.DOCKER_USERNAME }}/nginx:sbx -f dockerfile .
+
+          cd ./projects/production_grade_flow/worker
+          docker build -t ${{ vars.DOCKER_USERNAME }}/worker:sbx -f dockerfile .
+
+  
+      - name: docker push
+        run: |
+          docker image push ${{ vars.DOCKER_USERNAME }}/api:sbx
+          docker image push ${{ vars.DOCKER_USERNAME }}/client:sbx
+          docker image push ${{ vars.DOCKER_USERNAME }}/nginx:sbx
+          docker image push ${{ vars.DOCKER_USERNAME }}/worker:sbx
+
   cost_infra:
     uses: ./.github/workflows/infracost.yaml
     with:
@@ -90,7 +130,7 @@ jobs:
           export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}
           export ARM_SUBSCRIPTION_ID=${{ vars.ARM_SUBSCRIPTION_ID }}
           export ARM_USE_AZUREAD=true
-          export TF_VAR_docker_image_tag=${{ vars.DOCKER_TAG }}
+          export TF_VAR_docker_image_tag=sbx
           export TF_VAR_psql_admin_password=${{ secrets.PSQL_ADMIN_PASSWORD }}
           export TF_VAR_psql_admin_username=${{ secrets.PSQL_ADMIN_USERNAME }}
 
@@ -158,7 +198,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy Infrastructure using Terraform
     needs: [
-      plan_fibonacci_v1
+      plan_fibonacci_v1,
+      push_sandbox_images_to_registry
     ]
 
     defaults:
@@ -217,7 +258,7 @@ jobs:
           export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}
           export ARM_SUBSCRIPTION_ID=${{ vars.ARM_SUBSCRIPTION_ID }}
           export ARM_USE_AZUREAD=true
-          export TF_VAR_docker_image_tag=${{ vars.DOCKER_TAG }}
+          export TF_VAR_docker_image_tag=sbx
           export TF_VAR_psql_admin_password=${{ secrets.PSQL_ADMIN_PASSWORD }}
           export TF_VAR_psql_admin_username=${{ secrets.PSQL_ADMIN_USERNAME }}
           
@@ -330,7 +371,7 @@ jobs:
           export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}
           export ARM_SUBSCRIPTION_ID=${{ vars.ARM_SUBSCRIPTION_ID }}
           export ARM_USE_AZUREAD=true
-          export TF_VAR_docker_image_tag=${{ vars.DOCKER_TAG }}
+          export TF_VAR_docker_image_tag=sbx
           export TF_VAR_psql_admin_password=${{ secrets.PSQL_ADMIN_PASSWORD }}
           export TF_VAR_psql_admin_username=${{ secrets.PSQL_ADMIN_USERNAME }}
           

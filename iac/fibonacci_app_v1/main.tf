@@ -10,10 +10,10 @@ locals {
   client_container_app           = format("ca-client-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
   nginx_container_app            = format("ca-nginx-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
   worker_container_app           = format("ca-worker-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
-  api_docker_image               = format("index.docker.io/heathen1878/frontend:%s", var.docker_image_tag)#format("index.docker.io/heathen1878/api:%s", var.docker_image_tag)
-  client_docker_image            = format("index.docker.io/heathen1878/frontend:%s", var.docker_image_tag)#format("index.docker.io/heathen1878/client:%s", var.docker_image_tag)
-  nginx_docker_image             = format("index.docker.io/heathen1878/frontend:%s", var.docker_image_tag)#format("index.docker.io/heathen1878/nginx:%s", var.docker_image_tag)
-  worker_docker_image            = format("index.docker.io/heathen1878/frontend:%s", var.docker_image_tag)#format("index.docker.io/heathen1878/worker:%s", var.docker_image_tag)
+  api_docker_image               = format("index.docker.io/heathen1878/frontend:%s", var.docker_image_tag) #format("index.docker.io/heathen1878/api:%s", var.docker_image_tag)
+  client_docker_image            = format("index.docker.io/heathen1878/frontend:%s", var.docker_image_tag) #format("index.docker.io/heathen1878/client:%s", var.docker_image_tag)
+  nginx_docker_image             = format("index.docker.io/heathen1878/frontend:%s", var.docker_image_tag) #format("index.docker.io/heathen1878/nginx:%s", var.docker_image_tag)
+  worker_docker_image            = format("index.docker.io/heathen1878/frontend:%s", var.docker_image_tag) #format("index.docker.io/heathen1878/worker:%s", var.docker_image_tag)
   redis_cache                    = format("redis-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
   postgresql                     = format("psql-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
   name                           = "fb"
@@ -144,9 +144,9 @@ resource "azurerm_postgresql_flexible_server" "this" {
   public_network_access_enabled = false
   administrator_login           = var.psql_admin_username
   administrator_password        = var.psql_admin_password
-  storage_mb   = 32768
-  storage_tier = "P30"
-  sku_name = "B_Standard_B1ms"
+  storage_mb                    = 32768
+  storage_tier                  = "P30"
+  sku_name                      = "B_Standard_B1ms"
 
   depends_on = [
     azurerm_private_dns_zone_virtual_network_link.psql
@@ -341,7 +341,7 @@ resource "azurerm_container_app" "nginx" {
       name   = "nginx"
       image  = local.nginx_docker_image
       cpu    = "1.0"
-      memory = "2.0Gi"
+      memory = "2Gi"
     }
   }
   tags = merge(local.tags,
