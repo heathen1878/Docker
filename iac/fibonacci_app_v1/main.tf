@@ -4,8 +4,8 @@ locals {
   virtual_network_name           = format("vnet-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
   cae_infra_resource_group_name  = format("rg-cae-infra-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
   postgresql_server_name         = format("psql-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
-  redis_cache_name               = format("redis-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
   container_app_environment_name = format("cae-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
+  redis_container_app            = format("ca-redis-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
   api_container_app              = format("ca-api-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
   client_container_app           = format("ca-client-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
   nginx_container_app            = format("ca-nginx-%s-%s-%s-%s", local.name, var.environment, local.location_short_code, local.random)
@@ -115,11 +115,6 @@ resource "azurerm_private_dns_zone" "psql" {
   resource_group_name = azurerm_resource_group.this.name
 }
 
-resource "azurerm_private_dns_zone" "redis" {
-  name                = "privatelink.redis.cache.windows.net"
-  resource_group_name = azurerm_resource_group.this.name
-}
-
 resource "azurerm_private_dns_zone_virtual_network_link" "psql" {
   name                  = "psql"
   resource_group_name   = azurerm_resource_group.this.name
@@ -128,17 +123,6 @@ resource "azurerm_private_dns_zone_virtual_network_link" "psql" {
 
   depends_on = [
     azurerm_subnet.psql
-  ]
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "redis" {
-  name                  = "redis"
-  resource_group_name   = azurerm_resource_group.this.name
-  private_dns_zone_name = azurerm_private_dns_zone.redis.name
-  virtual_network_id    = azurerm_virtual_network.this.id
-
-  depends_on = [
-    azurerm_subnet.redis
   ]
 }
 
@@ -169,22 +153,6 @@ resource "azurerm_postgresql_flexible_server" "this" {
   }
 }
 
-resource "azurerm_redis_cache" "this" {
-  name                = local.redis_cache_name
-  location            = local.location
-  resource_group_name = azurerm_resource_group.this.name
-  capacity            = 1
-  family              = "C"
-  sku_name            = "Basic"
-  # family              = "P"
-  # sku_name            = "Premium"
-  minimum_tls_version = "1.2"
-  #subnet_id           = azurerm_subnet.redis.id
-
-  redis_configuration {
-  }
-}
-
 resource "azurerm_container_app_environment" "this" {
   name                               = local.container_app_environment_name
   location                           = local.location
@@ -204,6 +172,36 @@ resource "azurerm_container_app_environment" "this" {
   )
 }
 
+resource "azurerm_container_app" "redis" {
+  name                         = local.redis_container_app
+  container_app_environment_id = azurerm_container_app_environment.this.id
+  resource_group_name          = azurerm_resource_group.this.name
+  revision_mode                = "Single"
+  workload_profile_name        = "Dedicated"
+
+  ingress {
+    exposed_port               = 6379
+    target_port                = 6379
+    transport                  = "tcp"
+
+    traffic_weight {
+      latest_revision = true
+      percentage      = 100
+    }
+  }
+
+  template {
+    min_replicas = 1
+    max_replicas = 1
+    container {
+      name   = "redis"
+      image  = "redis:latest"
+      cpu    = "0.5"
+      memory = "1Gi"
+    }
+  }
+}
+
 resource "azurerm_container_app" "worker" {
   name                         = local.worker_container_app
   container_app_environment_id = azurerm_container_app_environment.this.id
@@ -212,10 +210,13 @@ resource "azurerm_container_app" "worker" {
   workload_profile_name        = "Dedicated"
 
   template {
+    min_replicas = 1
+    max_replicas = 1
+
     container {
       env {
         name  = "REDIS_HOST"
-        value = azurerm_redis_cache.this.hostname
+        value = azurerm_container_app.redis.latest_revision_fqdn
       }
 
       env {
@@ -250,7 +251,6 @@ resource "azurerm_container_app" "api" {
     traffic_weight {
       latest_revision = true
       percentage      = 100
-      #revision_suffix = "primary"
     }
   }
 
@@ -260,7 +260,7 @@ resource "azurerm_container_app" "api" {
     container {
       env {
         name  = "REDIS_HOST"
-        value = azurerm_redis_cache.this.hostname
+        value = azurerm_container_app.redis.latest_revision_fqdn
       }
 
       env {
@@ -320,7 +320,6 @@ resource "azurerm_container_app" "client" {
     traffic_weight {
       latest_revision = true
       percentage      = 100
-      #revision_suffix = "primary"
     }
   }
 
@@ -360,7 +359,6 @@ resource "azurerm_container_app" "nginx" {
     traffic_weight {
       latest_revision = true
       percentage      = 100
-      #revision_suffix = "primary"
     }
   }
 

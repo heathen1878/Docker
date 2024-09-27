@@ -3,9 +3,16 @@ output "usage" {
 }
 
 output "client" {
-  value = azurerm_container_app.client.latest_revision_fqdn
+  value = azurerm_container_app.client
+  sensitive = true
 }
 
 output "api" {
-  value = azurerm_container_app.api.latest_revision_fqdn
+  value = azurerm_container_app.api
+  sensitive = true
+}
+
+output "redis" {
+  value = azurerm_container_app.redis
+  sensitive = true
 }
