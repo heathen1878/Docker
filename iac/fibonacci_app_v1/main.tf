@@ -125,6 +125,10 @@ resource "azurerm_private_dns_zone_virtual_network_link" "psql" {
   resource_group_name   = azurerm_resource_group.this.name
   private_dns_zone_name = azurerm_private_dns_zone.psql.name
   virtual_network_id    = azurerm_virtual_network.this.id
+
+  depends_on = [
+    azurerm_subnet.psql
+  ]
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "redis" {
@@ -132,6 +136,10 @@ resource "azurerm_private_dns_zone_virtual_network_link" "redis" {
   resource_group_name   = azurerm_resource_group.this.name
   private_dns_zone_name = azurerm_private_dns_zone.redis.name
   virtual_network_id    = azurerm_virtual_network.this.id
+
+  depends_on = [
+    azurerm_subnet.redis
+  ]
 }
 
 resource "azurerm_postgresql_flexible_server" "this" {
@@ -145,7 +153,7 @@ resource "azurerm_postgresql_flexible_server" "this" {
   administrator_login           = var.psql_admin_username
   administrator_password        = var.psql_admin_password
   storage_mb                    = 32768
-  storage_tier                  = "P30"
+  storage_tier                  = "P4"
   sku_name                      = "B_Standard_B1ms"
 
   depends_on = [
@@ -176,8 +184,8 @@ resource "azurerm_container_app_environment" "this" {
   infrastructure_resource_group_name = local.cae_infra_resource_group_name
   infrastructure_subnet_id           = azurerm_subnet.cae.id
   workload_profile {
-    name                  = "Consumption"
-    workload_profile_type = "Consumption"
+    name                  = "Dedicated"
+    workload_profile_type = "D4"
     minimum_count         = 1
     maximum_count         = 2
   }
@@ -316,6 +324,10 @@ resource "azurerm_container_app" "client" {
       service = "Client"
     }
   )
+  depends_on = [
+    azurerm_container_app.api,
+    azurerm_container_app.worker
+  ]
 }
 
 resource "azurerm_container_app" "nginx" {
@@ -349,4 +361,9 @@ resource "azurerm_container_app" "nginx" {
       service = "NGinx"
     }
   )
+  depends_on = [
+    azurerm_container_app.api,
+    azurerm_container_app.client,
+    azurerm_container_app.worker
+  ]
 }
