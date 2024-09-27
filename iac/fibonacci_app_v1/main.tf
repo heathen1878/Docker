@@ -180,9 +180,9 @@ resource "azurerm_container_app" "redis" {
   workload_profile_name        = "Dedicated"
 
   ingress {
-    exposed_port               = 6379
-    target_port                = 6379
-    transport                  = "tcp"
+    exposed_port = 6379
+    target_port  = 6379
+    transport    = "tcp"
 
     traffic_weight {
       latest_revision = true
@@ -216,7 +216,7 @@ resource "azurerm_container_app" "worker" {
     container {
       env {
         name  = "REDIS_HOST"
-        value = azurerm_container_app.redis.latest_revision_fqdn
+        value = local.redis_container_app
       }
 
       env {
@@ -245,8 +245,9 @@ resource "azurerm_container_app" "api" {
   workload_profile_name        = "Dedicated"
 
   ingress {
-    allow_insecure_connections = true
-    target_port                = 5000
+    exposed_port = 5000
+    target_port  = 5000
+    transport    = "tcp"
 
     traffic_weight {
       latest_revision = true
@@ -260,7 +261,7 @@ resource "azurerm_container_app" "api" {
     container {
       env {
         name  = "REDIS_HOST"
-        value = azurerm_container_app.redis.latest_revision_fqdn
+        value = local.redis_container_app
       }
 
       env {
@@ -314,8 +315,9 @@ resource "azurerm_container_app" "client" {
   workload_profile_name        = "Dedicated"
 
   ingress {
-    allow_insecure_connections = true
-    target_port                = 3000
+    exposed_port = 3000
+    target_port  = 3000
+    transport    = "tcp"
 
     traffic_weight {
       latest_revision = true

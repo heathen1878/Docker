@@ -3,16 +3,16 @@ output "usage" {
 }
 
 output "client" {
-  value = azurerm_container_app.client
+  value     = azurerm_container_app.client
   sensitive = true
 }
 
 output "api" {
-  value = azurerm_container_app.api
+  value     = azurerm_container_app.api
   sensitive = true
 }
 
 output "redis" {
-  value = azurerm_container_app.redis
+  value     = azurerm_container_app.redis
   sensitive = true
 }
