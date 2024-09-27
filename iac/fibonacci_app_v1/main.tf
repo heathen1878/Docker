@@ -159,6 +159,14 @@ resource "azurerm_postgresql_flexible_server" "this" {
   depends_on = [
     azurerm_private_dns_zone_virtual_network_link.psql
   ]
+
+  // This block is used to ignore changes to the zone and standby_availability_zone
+  lifecycle {
+    ignore_changes = [
+     zone,
+     high_availability[0].standby_availability_zone,
+    ]
+  }
 }
 
 resource "azurerm_redis_cache" "this" {
@@ -201,6 +209,7 @@ resource "azurerm_container_app" "worker" {
   container_app_environment_id = azurerm_container_app_environment.this.id
   resource_group_name          = azurerm_resource_group.this.name
   revision_mode                = "Single"
+  workload_profile_name = "Dedicated"
 
   template {
     container {
@@ -232,6 +241,7 @@ resource "azurerm_container_app" "api" {
   container_app_environment_id = azurerm_container_app_environment.this.id
   resource_group_name          = azurerm_resource_group.this.name
   revision_mode                = "Single"
+  workload_profile_name = "Dedicated"
 
   ingress {
     allow_insecure_connections = true
@@ -299,6 +309,7 @@ resource "azurerm_container_app" "client" {
   container_app_environment_id = azurerm_container_app_environment.this.id
   resource_group_name          = azurerm_resource_group.this.name
   revision_mode                = "Single"
+  workload_profile_name = "Dedicated"
 
   ingress {
     allow_insecure_connections = true
@@ -335,6 +346,7 @@ resource "azurerm_container_app" "nginx" {
   container_app_environment_id = azurerm_container_app_environment.this.id
   resource_group_name          = azurerm_resource_group.this.name
   revision_mode                = "Single"
+  workload_profile_name = "Dedicated"
 
   ingress {
     allow_insecure_connections = true
