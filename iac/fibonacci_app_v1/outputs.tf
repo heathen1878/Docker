@@ -3,11 +3,9 @@ output "usage" {
 }
 
 output "client" {
-  value = azurerm_container_app.client
-  sensitive = true
+  value = azurerm_container_app.client.latest_revision_fqdn
 }
 
 output "api" {
-  value = azurerm_container_app.api
-  sensitive = true
+  value = azurerm_container_app.api.latest_revision_fqdn
 }
