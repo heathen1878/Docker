@@ -163,8 +163,8 @@ resource "azurerm_postgresql_flexible_server" "this" {
   // This block is used to ignore changes to the zone and standby_availability_zone
   lifecycle {
     ignore_changes = [
-     zone,
-     high_availability[0].standby_availability_zone,
+      zone,
+      high_availability[0].standby_availability_zone,
     ]
   }
 }
@@ -209,7 +209,7 @@ resource "azurerm_container_app" "worker" {
   container_app_environment_id = azurerm_container_app_environment.this.id
   resource_group_name          = azurerm_resource_group.this.name
   revision_mode                = "Single"
-  workload_profile_name = "Dedicated"
+  workload_profile_name        = "Dedicated"
 
   template {
     container {
@@ -226,7 +226,7 @@ resource "azurerm_container_app" "worker" {
       name   = "worker"
       image  = local.worker_docker_image
       cpu    = "1.0"
-      memory = "2.0Gi"
+      memory = "2Gi"
     }
   }
   tags = merge(local.tags,
@@ -241,7 +241,7 @@ resource "azurerm_container_app" "api" {
   container_app_environment_id = azurerm_container_app_environment.this.id
   resource_group_name          = azurerm_resource_group.this.name
   revision_mode                = "Single"
-  workload_profile_name = "Dedicated"
+  workload_profile_name        = "Dedicated"
 
   ingress {
     allow_insecure_connections = true
@@ -255,6 +255,8 @@ resource "azurerm_container_app" "api" {
   }
 
   template {
+    min_replicas = 1
+    max_replicas = 1
     container {
       env {
         name  = "REDIS_HOST"
@@ -309,7 +311,7 @@ resource "azurerm_container_app" "client" {
   container_app_environment_id = azurerm_container_app_environment.this.id
   resource_group_name          = azurerm_resource_group.this.name
   revision_mode                = "Single"
-  workload_profile_name = "Dedicated"
+  workload_profile_name        = "Dedicated"
 
   ingress {
     allow_insecure_connections = true
@@ -323,6 +325,8 @@ resource "azurerm_container_app" "client" {
   }
 
   template {
+    max_replicas = 1
+    min_replicas = 1
     container {
       name   = "client"
       image  = local.client_docker_image
@@ -346,7 +350,7 @@ resource "azurerm_container_app" "nginx" {
   container_app_environment_id = azurerm_container_app_environment.this.id
   resource_group_name          = azurerm_resource_group.this.name
   revision_mode                = "Single"
-  workload_profile_name = "Dedicated"
+  workload_profile_name        = "Dedicated"
 
   ingress {
     allow_insecure_connections = true
