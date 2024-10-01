@@ -254,7 +254,7 @@ $dom in ../Docker on  main [ 📝  🗃️  ×2 ]
 
 ### List
 
-From teh example above the running container is...
+From the example above the running container is...
 
 ```shell
 docker container ls
@@ -285,25 +285,50 @@ Docker `stop` uses `SIGTERM` a.k.a. a graceful shutdown whereas docker kill uses
 
 If the container doesn't stop after 10 seconds when docker stop was issued then docker will automatically issue docker kill. It can depend on whether the running process understands SIGTERM, if not a SIGKILL will be needed.
 
+## Docker System
 
+### Prune
 
+```shell
+docker system prune
+```
 
+:point_up: deletes stopped containers and cleans up build cache
 
+## Docker Logs
 
+```shell
+docker logs container id
+```
 
+## Docker Exec
 
+`docker exec -it container id sh | bash`
 
+You can also use `-it` with docker run.
 
+You can also connect to an existing running container using `docker attach containerid`; the limitation of this is, stdin is only connected to the primary process.
 
+## Data persistence
 
+By default any changes within the container are ephemeral; containers are stateless by nature. If data changes should persist then consider using volumes, bind mounts, or tmpfs mounts.
 
+### Volumes
 
+Volume mounts exist within the virtual machine running the container therefore allowing data to be persisted across container restarts.
 
+```shell
+# Create a volume
+docker volume create docker_volume_name
 
+docker run -v docker_volume_name:/path_within_the_container docker_image_name
+```
 
-#### Volumes
+:point_up: it more difficult to inspect the contents of a Docker Volume compared with a bind mount.
 
-You can connect Docker containers to reference the local filesystem using references e.g.
+### Bind Mounts
+
+Bind mounts connect back to the host filesystem also persisting data across container restarts; this option may have a sllight performance overhead.
 
 ```shell
 docker run -v local_path:/container_path
@@ -317,21 +342,12 @@ docker run -v container_path/directory_within_container -v local_path:/container
 __NOTE__
 Docker Compose is useful when you need to pass many options to Docker.
 
-#### Clear down containers
+### TmpFs Mounts
 
-`docker system prune` :point_left: deletes stopped containers and cleans up build cache
+Tmpfs mounts are in-memory storage...
 
-#### Viewing Logs
 
-`docker logs container id`
 
-#### Running commands within a container
-
-`docker exec -it container id sh | bash`
-
-You can also use `-it` with docker run.
-
-You can also connect to an existing running container using `docker attach containerid`; the limitation of this is, stdin is only connected to the primary process.
 
 ## Docker Server
 

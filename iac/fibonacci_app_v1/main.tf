@@ -138,7 +138,7 @@ resource "azurerm_postgresql_flexible_server" "this" {
   administrator_password        = var.psql_admin_password
   storage_mb                    = 32768
   storage_tier                  = "P4"
-  sku_name                      = "B_Standard_B1ms"
+  sku_name                      = "B_Standard_B2s"
 
   depends_on = [
     azurerm_private_dns_zone_virtual_network_link.psql
@@ -153,6 +153,8 @@ resource "azurerm_postgresql_flexible_server" "this" {
   }
 }
 
+
+
 resource "azurerm_container_app_environment" "this" {
   name                               = local.container_app_environment_name
   location                           = local.location
@@ -163,7 +165,7 @@ resource "azurerm_container_app_environment" "this" {
     name                  = "Dedicated"
     workload_profile_type = "D4"
     minimum_count         = 1
-    maximum_count         = 2
+    maximum_count         = 3
   }
   tags = merge(local.tags,
     {
@@ -196,8 +198,8 @@ resource "azurerm_container_app" "redis" {
     container {
       name   = "redis"
       image  = "redis:latest"
-      cpu    = "0.5"
-      memory = "1Gi"
+      cpu    = "1.0"
+      memory = "2Gi"
     }
   }
 }
@@ -296,8 +298,8 @@ resource "azurerm_container_app" "api" {
 
       name   = "api"
       image  = local.api_docker_image
-      cpu    = "0.75"
-      memory = "1.5Gi"
+      cpu    = "1.0"
+      memory = "2Gi"
     }
   }
   tags = merge(local.tags,
@@ -331,8 +333,8 @@ resource "azurerm_container_app" "client" {
     container {
       name   = "client"
       image  = local.client_docker_image
-      cpu    = "0.75"
-      memory = "1.5Gi"
+      cpu    = "1.0"
+      memory = "2Gi"
     }
   }
   tags = merge(local.tags,
