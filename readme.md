@@ -164,32 +164,30 @@ heathen1878/basic              latest    755bfc9736da   2 hours ago     7.8MB
 basic                          latest    755bfc9736da   2 hours ago     7.8MB
 ```
 
-### Docker Run
-
-Docker run creates a container from the image and runs that container locally.
+#### Remove
 
 ```shell
-docker run -d -p 80:80 --name frontend frontend
+docker image rm basic
+```
+
+```shell
+docker image ls
 ```
 
 ```text
 $dom in ../Docker on  main [ 📝  🗃️  ×2 ] 
-39ms bash $ ✘ sudo docker run -d -p 80:80 --name frontend frontend
-4f0a7ff2e2f04f7443034a3529dbf6c790c7e8e71640b24ef5f3a3da992ede15
+2s bash $ ➜ sudo docker image ls
+REPOSITORY                     TAG       IMAGE ID       CREATED         SIZE
+heathen1878/basic              latest    755bfc9736da   2 hours ago     7.8MB
 ```
 
-![frontend](images/frontend.png)
+### Docker Run
 
-### Create and run a container from an image
-
-```shell
-docker run hello-world
-```
+Docker run creates a container from the image and runs that container locally.
 
 `docker run` pretty much equals `docker create` and `docker start`
 
 :point_down:
-
 Docker Server will check the image cache for cached copies of the requested image.
 
 ```text
@@ -213,7 +211,7 @@ To generate this message, Docker took the following steps:
     to your terminal.
 ```
 
-### Overriding the startup command
+#### Overriding the startup command
 
 ```shell
 docker run busybox ls
@@ -238,22 +236,41 @@ var
 
 ### Running detached
 
-To run a container and have the command prompt returned use `-d` e.g. 
+In the example below a web server is being run locally on port 80 in a detached state.
 
 ```shell
-docker run -d container-id
+docker run -d -p 80:80 --name frontend frontend
 ```
 
-### List running containers
-
-```shell
-docker ps
+```text
+$dom in ../Docker on  main [ 📝  🗃️  ×2 ] 
+39ms bash $ ✘ sudo docker run -d -p 80:80 --name frontend frontend
+4f0a7ff2e2f04f7443034a3529dbf6c790c7e8e71640b24ef5f3a3da992ede15
 ```
 
-#### List all containers
+![frontend](images/frontend.png)
+
+## Docker Container
+
+### List
+
+From teh example above the running container is...
 
 ```shell
-docker ps --all
+docker container ls
+```
+
+```text
+dom in ../Docker on  main [ 📝 ] 
+1s bash $ ➜ sudo docker container ls
+CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS         PORTS                               NAMES
+4f0a7ff2e2f0   frontend   "/docker-entrypoint.…"   8 minutes ago   Up 8 minutes   0.0.0.0:80->80/tcp, :::80->80/tcp   frontend
+```
+
+#### List all
+
+```shell
+docker container ls --all
 ```
 
 #### Start
@@ -267,6 +284,22 @@ To stop a container you can run `docker stop container id` or `docker kill conta
 Docker `stop` uses `SIGTERM` a.k.a. a graceful shutdown whereas docker kill uses `SIGKILL` a.k.a. stop now...
 
 If the container doesn't stop after 10 seconds when docker stop was issued then docker will automatically issue docker kill. It can depend on whether the running process understands SIGTERM, if not a SIGKILL will be needed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #### Volumes
 
