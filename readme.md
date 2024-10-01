@@ -324,11 +324,13 @@ docker volume create docker_volume_name
 docker run -v docker_volume_name:/path_within_the_container docker_image_name
 ```
 
-:point_up: it more difficult to inspect the contents of a Docker Volume compared with a bind mount.
+:point_up: it more difficult to inspect the contents of a Docker Volume compared with a bind mount. There is a privileged container you can run to view the volumes. See [here](https://github.com/sidpalas/devops-directive-docker-course/tree/main/04-using-3rd-party-containers#i-volume-mounts)
 
 ### Bind Mounts
 
-Bind mounts connect back to the host filesystem also persisting data across container restarts; this option may have a sllight performance overhead.
+Bind mounts connect back to the host filesystem also persisting data across container restarts; this option may have a sllight performance overhead for heavy erad / writes.
+
+Bind mounts tend to be used where software developers are making code changes and want those changes to be reflected automatically within the container without having to rebuild the container or where you want to pass a start-up configuration file to postgres, nginx or similar. See the projects section for examples of these.
 
 ```shell
 docker run -v local_path:/container_path
@@ -345,9 +347,6 @@ Docker Compose is useful when you need to pass many options to Docker.
 ### TmpFs Mounts
 
 Tmpfs mounts are in-memory storage...
-
-
-
 
 ## Docker Server
 
@@ -415,6 +414,13 @@ This example uses docker compose to build the networking between in each contain
 
 This example uses Github Actions to build and test and then deploy to Docker Hub. See [here](./projects/production_grade_flow/readme.md)
 
+### PostgreSQL
+
+...
+
+### NGinx
+
+...
 
 #### Build Status
 
@@ -429,13 +435,3 @@ Push to Docker Hub
 App Service Deployment
 
 [![Deploy Infra](https://github.com/heathen1878/Docker/actions/workflows/deploy_infra.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/deploy_infra.yaml)
-
-
-
-### Image
-
-Just a file system snapshot with a startup command
-
-## Container instance
-
-A container is an instance of the image running on your local docker instance.
