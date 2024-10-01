@@ -178,7 +178,7 @@ $dom in ../Docker on  main [ 📝  🗃️  ×2 ]
 4f0a7ff2e2f04f7443034a3529dbf6c790c7e8e71640b24ef5f3a3da992ede15
 ```
 
-![frontend](files://images/frontend.png)
+![frontend](images/frontend.png)
 
 ### Create and run a container from an image
 
