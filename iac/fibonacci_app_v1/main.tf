@@ -281,7 +281,7 @@ resource "azurerm_container_app" "api" {
 
       env {
         name  = "PGDATABASE"
-        value = "postgres"
+        value = "fibonacci"
       }
 
       env {

@@ -1,8 +1,184 @@
 # Docker
 
+## Introduction
+
+### What are containers?
+
+Containers are isolated software environments that allow packages applications to run across different platforms regardless of the underlying infrastructure. Docker is one such platform that facilitates this.
+
+Containers fix the challenges of deploying application across inconsistent environments, environments with resource constraints, and enables quicker deployments and scaling.
+
+#### OCI
+
+The Opem Container Initiative (OCI) has 3 main specs which define
+
+- Runtime specs - container engine
+- Image specs - image format
+and...
+- Distribution specs - standardised API to facilitate the distribution of content
+
+### Evolution of virtualisation
+
+#### Bare metal
+
+Shared depedencies as binaries and libraries live on the same OS.
+
+- Inefficient from a resource utilisation point-of-view
+- slow start up and shutdown
+- provisioning tedious
+
+#### Virtual Machines
+
+Shared hardware but OSes are independent.
+
+- Better utilisation of resources
+- faster start up and shutdowns
+- faster provisioning and templating
+
+#### Containers
+
+Shared OS with container runtime; containers can run on either bare metal or virtual machines.
+
+- Application and binaries are sharing the Linux kernel; Windows is different :thinking:
+- Binaries and libraries are isolated to the container
+- Start up and shutdowns in seconds
+- Excellent resource utilisation
+
+##### Platforms
+
+- Docker
+- Podman
+
+##### Runtimes
+
+- Containerd (k8s uses this)
+- Cri-o
+
+## Underlying technology
+
+### Namespaces
+
+Namespaces enable the isolation of systems resources e.g. the process namespace isolates processes so a container process cannot see host processes or processes in other containers.
+
+There are networking, file system mount points, Naming, User and inter-process communication namespaces which allow containers to run isolated in Linux.
+
+### Control Groups
+
+To view cgroups...
+
+```shell
+cat /proc/cgroups
+```
+
+Limits amount of resources used per process...
+
+:point_up: specific to Linux
+Docker Desktop runs a Linux Virtual Machine...which is where the containers reside and it's that Linux Kernel that controls / isolates access.
+
+#### Container process
+
+A running process with access to a given set of resources
+
+process within container -> kernel -> allocated hardware resources
+
+### Union filesystems
+
+Unifies several filesystems into one; Docker uses overlayfs. Directories with the same path are merged whereas files at the upper layer take precedence over the same files at the lower layer.
+
+## Docker Engine
+
+The Docker Engine is the open source components of Docker Desktop; specifically the client CLI, dockerd and Docker API.
+
 ## Docker Client
 
+This component is __Part of the Docker Engine__.
+
+```shell
+docker --version
+```
+
 Passes commands to the Docker Server
+
+### Credential helpers
+
+...
+
+### Extensions
+
+...
+
+## Docker Server / Host
+
+This component is __Part of the Docker Engine__.
+
+The installation of Docker Desktop creates a virtual machine locally that exposes the Docker API and runs dockerd.
+
+### Windows
+
+On a Windows System Docker Desktop can use WSL or Hyper-V as the virtual machine.
+
+### Docker API
+
+This component is __Part of the Docker Engine__.
+...
+
+### Docker Daemon - dockerd
+
+Part of the Docker Engine.
+...
+
+## Docker Commands
+
+### Docker Pull
+
+Downloads an image from the registry...this command would be run by Docker Run too if the image doesn't exist locally.
+
+```shell
+docker pull image_name
+
+#e.g.
+docker pull busybox # pull the latest version of busybox
+```
+
+### Docker Build
+
+Build a Docker image from a dockerfile; `-f` is useful if the dockerfile isn't called dockerfile e.g. `dockerfile.dev`.
+
+```shell
+docker build -f ./dockerfile -t name:tag .
+```
+
+### Docker Image
+
+List the images available locally...
+
+```shell
+docker image ls
+```
+
+```text
+$dom in ../Docker on  main [ 📝  🗃️  ×2 ] 
+2s bash $ ➜ sudo docker image ls
+REPOSITORY                     TAG       IMAGE ID       CREATED         SIZE
+heathen1878/basic              latest    755bfc9736da   2 hours ago     7.8MB
+basic                          latest    755bfc9736da   2 hours ago     7.8MB
+```
+
+### Docker Run
+
+Docker run creates a container from the image and runs that container locally.
+
+```shell
+docker run -d -p 80:80 --name frontend frontend
+```
+
+```text
+$dom in ../Docker on  main [ 📝  🗃️  ×2 ] 
+39ms bash $ ✘ sudo docker run -d -p 80:80 --name frontend frontend
+4f0a7ff2e2f04f7443034a3529dbf6c790c7e8e71640b24ef5f3a3da992ede15
+```
+
+![frontend](files://images/frontend.png)
 
 ### Create and run a container from an image
 
@@ -157,35 +333,6 @@ run the commands within the container...
 
 `docker commit -c 'CMD [ "redis-server" ] container-id`
 
-#### Namespacing
-
-[namespacing](https://www.toptal.com/linux/separation-anxiety-isolating-your-system-with-linux-namespaces)
-
-#### Control Groups
-
-Limits amount of resources used per process...
-
-:point_up: specific to Linux
-Docker Desktop runs a Linux Virtual Machine...which is where the containers reside and it's that Linux Kernel that controls / isolates access.
-
-```shell
-docker --version
-```
-
-#### Container process
-
-A running process with access to a given set of resources
-
-process within container -> kernel -> allocated hardware resources
-
-#### Image
-
-Just a file system snapshot with a startup command
-
-### Container instance
-
-A container is an instance of the image running on your local docker instance.
-
 ## Projects
 
 ### Base Linux Images
@@ -233,3 +380,13 @@ Push to Docker Hub
 App Service Deployment
 
 [![Deploy Infra](https://github.com/heathen1878/Docker/actions/workflows/deploy_infra.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/deploy_infra.yaml)
+
+
+
+### Image
+
+Just a file system snapshot with a startup command
+
+## Container instance
+
+A container is an instance of the image running on your local docker instance.
