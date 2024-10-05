@@ -325,6 +325,8 @@ By default any changes within the container are ephemeral; containers are statel
 
 ### Volumes
 
+By default docker volumes are stored in `/var/lib/docker/volumes/`, you can modify the locatio used by Docker by editing `/lib/systemd/system/docker.service` and changing `ExecStart` to include `--data-root /something`
+
 Volume mounts exist within the virtual machine running the container therefore allowing data to be persisted across container restarts.
 
 ```shell
@@ -412,6 +414,52 @@ variables:
   tags: '233'
 ```
 
+### Databases
+
+#### Postgresql
+
+Postgresql can easily be deployed using a prebuilt official image; and easily customised using bind mounts and volumes.
+
+```shell
+docker volume create pgdata
+
+docker build -f projects/postgresql/dockerfile projects/postgresql/ -t heathen1878/postgres:dom
+
+docker run -d -v pgdata:/var/lib/postgresql/data -e POSTGRES_PASSWORD=p@ssw0rd -p 5432:5432 heathen1878/postgres:dom
+```
+
+Using Docker Compose...
+
+```shell
+# passing sudo -E to expose the postgres password to Docker Compose. The script create_environment_variables.sh can pull values from KV or GitHub and create environmental variables.
+sudo -E docker compose --project-directory projects/postgresql/ up
+```
+
+### Interactive test environments
+
+Useful for running code against runtime not installed locally.
+
+### Command line utilities
+
+The Terraform wrapper contains tooling to assist in running Terraform.
+
+```shell
+docker build -f projects/terraform_wrapper/dockerfile projects/terraform_wrapper --build-arg TERRAFORM_VERSION="1.9.3" -t heathen1878/tfcli:22.04 -t heathen1878/tfcli:latest
+
+
+
+alias 'tfcli=docker run --rm -it -v ${PWD}:~/ heathen1878/tfcli:latest'
+```
+
+```shell
+tfcli
+
+
+
+
+exit
+```
+
 ### Node Js
 
 This is a simple Node Js web app running as a container - see [here](./projects/node_js_web_app/readme.md)
@@ -431,3 +479,7 @@ This example uses Github Actions to build and test and then deploy to Docker Hub
 ### NGinx
 
 ...
+
+## Useful links
+
+[Willy Wonka](https://www.youtube.com/watch?v=GsLZz8cZCzc)
