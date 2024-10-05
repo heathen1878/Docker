@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Load the functions
-# shellcheck source-path=/root/functions
-if [ -d root/tfcli/functions ]
+# shellcheck source-path=functions
+if [ -d /tfcli/functions ]
 then
-    for file in /root/tfcli/functions/*.sh
+    for file in /tfcli/functions/*.sh
     do
-        source "$file"
+        . "$file"
     done
 fi

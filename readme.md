@@ -8,7 +8,7 @@
 
 ### Builds
 
-[![Push Frontend To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml) [![Deploy Infra](https://github.com/heathen1878/Docker/actions/workflows/deploy_infra.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/deploy_infra.yaml)
+[![Push Frontend To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml)
 
 ## Introduction
 
@@ -448,7 +448,7 @@ docker build -f projects/terraform_wrapper/dockerfile projects/terraform_wrapper
 
 
 
-alias 'tfcli=docker run --rm -it -v ${PWD}:~/ heathen1878/tfcli:latest'
+alias 'tfcli=docker run --rm -it -v ~/source:/root/source heathen1878/tfcli:latest bash'
 ```
 
 ```shell

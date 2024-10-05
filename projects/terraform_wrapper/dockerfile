@@ -1,13 +1,11 @@
 FROM ubuntu:22.04
 
-ARG TERRAFORM_VERSION=1.9.0
+ARG TERRAFORM_VERSION=1.9.3
 
-WORKDIR /root/tfcli
+WORKDIR /tfcli
 
 COPY ./functions ./functions
 COPY ./scripts .
-COPY ./starship/starship.toml .config/starship.toml
-COPY load_functions.sh .
 
 # Update and upgrade apt
 RUN apt-get update && apt-get upgrade -y
@@ -20,21 +18,41 @@ RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 RUN curl -fsSL https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip --output JetBrainsMono.zip
 RUN unzip JetBrainsMono.zip -d /usr/share/fonts
 
-#Install Starship command prompt
-RUN curl -fsSL https://starship.rs/install.sh --yes | sh
+# Install tfswitch
+RUN curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/master/install.sh | bash
+RUN tfswitch ${TERRAFORM_VERSION}
 
-# Install Terraform
-RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | gpg --yes --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-RUN gpg --no-default-keyring --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg --fingerprint
-RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list > /dev/null
-RUN apt-get update
-RUN apt-get install terraform
+WORKDIR /root
+
+#Install Starship command prompt
+RUN curl -fsSL https://starship.rs/install.sh | sh -s -- -y
+COPY ./starship/starship.toml .config/starship.toml
+RUN echo "" >> ~/.bashrc
+RUN echo "#Starship" >> ~/.bashrc
+RUN echo "$(starship init bash)" >> ~/.bashrc
+RUN echo "" >> ~/.bashrc
+
+# Install Terraform autocomplete
 RUN terraform -install-autocomplete
 
 # Install Keychain
 RUN apt-get install -y keychain
+RUN echo "" >> ~/.bashrc
+RUN echo "#Keychain" >> ~/.bashrc
+RUN echo "eval \`keychain --eval --agents ssh github\`" >> ~/.bashrc
+RUN echo "" >> ~/.bashrc
 
-ENTRYPOINT [ "bash", "-c", "/root/tfcli/load_functions.sh" ]
+# Load bash functions
+RUN echo "if [ -d /tfcli/functions ]" >> ~/.bashrc
+RUN echo "then" >> ~/.bashrc
+RUN echo "    for f in /tfcli/functions/*.sh" >> ~/.bashrc
+RUN echo "    do" >> ~/.bashrc
+RUN echo "        source \$f" >> ~/.bashrc
+RUN echo "    done" >> ~/.bashrc
+RUN echo "fi" >> ~/.bashrc
+
+# Copy bash aliases
+COPY ./aliases/.bash_aliases .bash_aliases
 
 
 
