@@ -29,8 +29,9 @@ jobs:
       - name: docker build
         run: |
           cd ./projects/terraform_wrapper
-          docker build -t ${{ vars.DOCKER_USERNAME }}/tfcli:${{ vars.TFCLI_TAG }} -f dockerfile .
+          docker build -t ${{ vars.DOCKER_USERNAME }}/tfcli:${{ vars.TFCLI_TAG }} -t ${{ vars.DOCKER_USERNAME }}/tfcli:latest -f dockerfile .
   
       - name: docker push
         run: |
           docker image push ${{ vars.DOCKER_USERNAME }}/tfcli:${{ vars.TFCLI_TAG }}
+          docker image push ${{ vars.DOCKER_USERNAME }}/tfcli:latest
