@@ -91,3 +91,5 @@ git commit -m "Initial commit"
 git remote add origin git@github.com:{account_name}/{repo_name}.git
 git push -u origin {main_branch_name}
 ```
+
+[Azure Redis Cache](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-nodejs-get-started?tabs=entraid)

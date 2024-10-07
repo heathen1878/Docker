@@ -446,17 +446,18 @@ The Terraform wrapper contains tooling to assist in running Terraform.
 ```shell
 docker build -f projects/terraform_wrapper/dockerfile projects/terraform_wrapper --build-arg TERRAFORM_VERSION="1.9.3" -t heathen1878/tfcli:22.04 -t heathen1878/tfcli:latest
 
-
-
-alias 'tfcli=docker run --rm -it -v ~/source:/root/source heathen1878/tfcli:latest bash'
+# Create a local alias which run the container mounting local source directories and .ssh directories into the container.
+alias 'tfcli=sudo docker run --rm -it -v ~/source:/root/source -v ~/.ssh:/root/.ssh heathen1878/tfcli:latest bash'
 ```
 
 ```shell
+# Run the contaner from the alias above
 tfcli
 
+# Test authentication using Az Cli
+tfauth 
 
-
-
+# Exit the container
 exit
 ```
 
