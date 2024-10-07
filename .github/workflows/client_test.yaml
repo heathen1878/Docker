@@ -1,10 +1,11 @@
-name: Test Frontend Docker Build
+name: Test Client Docker Build
 on:
   pull_request: 
     branches:
       - '*'
     paths:
-      - 'projects/production_grade_flow/frontend/dockerfile*'
+      - 'projects/production_grade_flow/client/dockerfile*'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -13,7 +14,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./projects/production_grade_flow/frontend
+        working-directory: ./projects/production_grade_flow/client
 
     steps:
       - name: checkout repository
@@ -21,10 +22,10 @@ jobs:
 
       - name: docker build
         run: |
-          docker build -t ${{ vars.DOCKER_USERNAME }}/frontend -f dockerfile.dev .
+          docker build -t ${{ vars.DOCKER_USERNAME }}/client -f dockerfile.dev .
 
       - name: docker login
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       - name: docker run with tests
-        run: docker run -e CI=true ${{ vars.DOCKER_USERNAME }}/frontend npm test
+        run: docker run -e CI=true ${{ vars.DOCKER_USERNAME }}/client npm test

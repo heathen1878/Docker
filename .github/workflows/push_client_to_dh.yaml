@@ -1,16 +1,16 @@
-name: Push Frontend To Docker Hub
+name: Push Client To Docker Hub
 
 on:
   push:
     branches: master
     paths:
-      - 'projects/production_grade_flow/frontend/dockerfile*'
+      - 'projects/production_grade_flow/client/dockerfile*'
   workflow_dispatch:
 
 jobs:
   push_to_registry:
     runs-on: ubuntu-latest
-    name: Push Frontend to Docker Hub
+    name: Push Client to Docker Hub
     permissions:
       contents: write
       pull-requests: write
@@ -28,12 +28,12 @@ jobs:
       
       - name: docker build
         run: |
-          cd ./projects/production_grade_flow/frontend
-          docker build -t ${{ vars.DOCKER_USERNAME }}/frontend:${{ github.run_number }} -f dockerfile .
+          cd ./projects/production_grade_flow/client
+          docker build -t ${{ vars.DOCKER_USERNAME }}/client:${{ github.run_number }} -f dockerfile .
   
       - name: docker push
         run: |
-          docker image push ${{ vars.DOCKER_USERNAME }}/frontend:${{ github.run_number }}
+          docker image push ${{ vars.DOCKER_USERNAME }}/client:${{ github.run_number }}
       
       - name: Create App Token
         id: app_token

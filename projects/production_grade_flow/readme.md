@@ -31,6 +31,12 @@ npm run test
 
 `docker compose up`
 
+The [docker-compose.yml](./docker-compose.yml) uses secrets passed from the command line. If you have to `sudo` to run docker then append `-E` to the command to pass the environment variables from your session. e.g. `sudo -E docker compose up -d`. Use [create_environment_variables.sh](./scripts/create_environment_variables.sh) to set environment variables sourced from Key Vault or Git Hub.
+
+#### Redis
+
+You may need to run `sysctl vm.overcommit_memory=1` in your console.
+
 ## Azure DevOps Project / GitHub Account
 
 ### Prerequisites
@@ -86,18 +92,4 @@ git remote add origin git@github.com:{account_name}/{repo_name}.git
 git push -u origin {main_branch_name}
 ```
 
-### Pipelines
-
-Azure DevOps -> Project -> Repository -> Branch -> CI Pipeline...
-
-## Dev Phase
-
-Feature Branch -> PR -> ...
-
-## Testing Phase
-
-CI Pipeline to run tests -> ...
-
-## Production Phase
-
-Merge PR -> Main Branch...
+[Azure Redis Cache](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-nodejs-get-started?tabs=entraid)

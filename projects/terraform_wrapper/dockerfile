@@ -1,0 +1,67 @@
+FROM ubuntu:22.04
+
+ARG TERRAFORM_VERSION=1.9.3
+
+WORKDIR /tfcli
+
+COPY ./functions ./functions
+COPY ./scripts .
+
+# Update and upgrade apt
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y build-essential curl file git jq zip unzip shellcheck gnupg software-properties-common
+
+# Install Azure Cli
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+
+# Install JetBrains fonts
+RUN curl -fsSL https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip --output JetBrainsMono.zip
+RUN unzip JetBrainsMono.zip -d /usr/share/fonts
+
+# Install tfswitch
+RUN curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/master/install.sh | bash
+RUN tfswitch ${TERRAFORM_VERSION}
+
+WORKDIR /root
+
+#Install Starship command prompt
+RUN curl -fsSL https://starship.rs/install.sh | sh -s -- -y
+COPY ./starship/starship.toml .config/starship.toml
+RUN echo "" >> ~/.bashrc
+RUN echo "#Starship" >> ~/.bashrc
+RUN echo "$(starship init bash)" >> ~/.bashrc
+RUN echo "" >> ~/.bashrc
+
+# Install Terraform autocomplete
+RUN terraform -install-autocomplete
+
+# Install Keychain
+RUN apt-get install -y keychain
+RUN echo "" >> ~/.bashrc
+RUN echo "#Keychain" >> ~/.bashrc
+RUN echo "eval \`keychain --eval --agents ssh github\`" >> ~/.bashrc
+RUN echo "" >> ~/.bashrc
+
+# Load bash functions
+RUN echo "if [ -d /tfcli/functions ]" >> ~/.bashrc
+RUN echo "then" >> ~/.bashrc
+RUN echo "    for f in /tfcli/functions/*.sh" >> ~/.bashrc
+RUN echo "    do" >> ~/.bashrc
+RUN echo "        source \$f" >> ~/.bashrc
+RUN echo "    done" >> ~/.bashrc
+RUN echo "fi" >> ~/.bashrc
+
+# Copy bash aliases
+COPY ./aliases/.bash_aliases .bash_aliases
+
+
+
+
+
+
+
+
+
+
+
+

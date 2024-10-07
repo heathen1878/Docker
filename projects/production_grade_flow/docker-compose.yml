@@ -1,0 +1,58 @@
+services:
+  postgres:
+    image: "postgres:latest" # From DockerHub
+    environment:
+      POSTGRES_PASSWORD: /run/secrets/postgres_password
+    secrets:
+      - postgres_password
+  redis:
+    image: "redis:latest" # From DockerHub
+  api:
+    build:
+      context: ./api
+      dockerfile: dockerfile.dev
+    volumes:
+      - /app/node_modules # do not override this...
+      - ./api:/app # anything in /app should redirect to ./api/...
+    environment:
+      REDIS_HOST: redis # Pulled from the redis key above
+      REDIS_PORT: 6379
+      PGUSER: postgres
+      PGHOST: postgres
+      PGDATABASE: postgres
+      PGPORT: 5432
+      PGPASSWORD: /run/secrets/postgres_password
+    secrets:
+      - postgres_password
+  worker:
+    build:
+      context: ./worker
+      dockerfile: dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - ./worker:/app
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+  client:
+    environment:
+      WDS_SOCKET_PORT: 0
+    build:
+      context: ./client
+      dockerfile: dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+  nginx:
+    depends_on:
+    - api
+    - client
+    restart: always
+    build:
+      context: ./nginx
+      dockerfile: dockerfile.dev
+    ports:
+    - 80:80
+secrets:
+  postgres_password:
+    environment: PGPASSWORD
