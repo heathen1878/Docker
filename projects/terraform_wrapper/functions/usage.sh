@@ -25,8 +25,8 @@ function show_usage() {
         _green="\033[1;32m"
         _colour="\033[1;33m‼"
         echo -e "${_green}[] denotes optional argument\e[0m"
-        echo -e "${_colour} USAGE: source ./helper_scripts/setup.sh \ \n-s storage_account_name \ \n-k key_vault_name \ \n-r resource_group_name \ \n-e [dev] \ \n-l uksouth \ \n-p [api] \ \n-m env-config\e[0m"
-        echo -e "${_green}Example: source ./helper_scripts/setup.sh \ \n-s my_storage_account \ \n-k my_key_vault \ \n-r my_resource_group \ \n-e dev \ \n-l uksouth \ \n-p api \ \n-m env-config\e[0m"
+        echo -e "${_colour} USAGE: source ./helper_scripts/setup.sh \ \n-s storage_account_name \ \n-k key_vault_name \ \n-r resource_group_name \ \n-e [dev] \ \n-l uksouth \ \n-p [plg] \ \n-m env-config\e[0m"
+        echo -e "${_green}Example: source ./helper_scripts/setup.sh \ \n-s my_storage_account \ \n-k my_key_vault \ \n-r my_resource_group \ \n-e dev \ \n-l uksouth \ \n-p plg \ \n-m env-config\e[0m"
         return 1
         ;;
     *show.sh)
