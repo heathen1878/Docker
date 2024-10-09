@@ -4,11 +4,21 @@
 
 ### Tests
 
-[![Test Frontend Docker Build](https://github.com/heathen1878/Docker/actions/workflows/frontend_test.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/frontend_test.yaml)
+[![Test Frontend Docker Build](https://github.com/heathen1878/Docker/actions/workflows/frontend_test.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/frontend_test.yaml) [![Test Client Docker Build](https://github.com/heathen1878/Docker/actions/workflows/client_test.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/client_test.yaml)
 
 ### Builds
 
-[![Push Frontend To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml)
+#### NodeJs Web App
+
+[![Push Frontend To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml) 
+
+#### Fibonacci Calculator
+
+[![Push Api To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_api_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_api_to_dh.yaml) [![Push Client To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_client_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_client_to_dh.yaml) [![Push Nginx To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml) [![Push Nginx To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml)
+
+#### Terraform Cli
+
+[![Push Terraform Cli To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_tfcli_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_tfcli_to_dh.yaml)
 
 ## Introduction
 
