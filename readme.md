@@ -399,7 +399,19 @@ run the commands within the container...
 
 ## Dockerfile
 
-The dockerfile is a text documentation that contains instructions that docker should execute; see [docker build](#docker-build)
+The dockerfile is a text documentation that contains instructions that docker should execute; see [docker build](#docker-build). The `.` represents the build context i.e. where the source code resides.
+
+Within the build context you can include a `.dockerignore` file which tells docker to ignore files, folders...
+
+### Image size and security
+
+Generally it is best to try and use the `alpine` variant of the docker image.
+
+```dockerfile
+FROM ubuntu:alpine
+
+
+```
 
 ## Projects
 
@@ -502,6 +514,10 @@ In a cloud environment you may use managed instances of these. See these example
 [Container Instances](https://github.com/heathen1878/ACI)
 
 [Kubernetes](https://github.com/heathen1878/AKS)
+
+### Node and Go API with React Frontend
+
+...
 
 ## Useful links
 
