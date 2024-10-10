@@ -411,7 +411,7 @@ Within the build context you can include a `.dockerignore` file which tells dock
   - application dependencies
 - small and secure :point_down:
 
-Generally it is best to try and use the `alpine` variant of the docker image and a specific version too.
+Generally it is best to try and use the `alpine`, `slim`, `minimal`, or whichever variant defines small of the docker image; and a specific version too.
 
 ```dockerfile
 FROM almalinux:8-minimal
@@ -440,8 +440,29 @@ FROM golang:alpine
   apt install iputils-ping -y
   CMDS
   ```
+  
+- Set the working directory
+- Set the expose port
+- Define any environmental variables
 
+```dockerfile
+WORKDIR /app
+EXPOSE 8080
+ENV variable=env_var
+```
 
+- Use `.dockerignore`
+
+- Use a non root user
+- Ensure only the required dependencies are installed...between dev and prod
+- Use multi stage builds
+
+```dockerfile
+USER nonroot
+
+FROM image:version as build-base
+COPY --from=build-base /some/file /some/file
+```
 
 ## Projects
 
