@@ -445,6 +445,10 @@ Using Docker Compose...
 sudo -E docker compose --project-directory projects/postgresql/ up
 ```
 
+#### Redis
+
+...
+
 ### Interactive test environments
 
 Useful for running code against runtime not installed locally.
@@ -473,23 +477,28 @@ exit
 
 ### Node Js
 
-This is a simple Node Js web app running as a container - see [here](./projects/node_js_web_app/readme.md)
+This is a simple Node Js web app running as a container; see instructions [here](./projects/node_js_web_app/readme.md)
 
 ### Multi tier app
 
-This example uses docker compose to build the networking between in each container. See [here](./projects/fibonacci_calculator/readme.md)
+This example uses docker compose to build the networking between in each container. The [dockerfile](./projects/multi_tier_app/dockerfile) defines how the image should be built and [docker compose](./projects/multi_tier_app/docker-compose.yml) builds it and run the container with any additional instructions. Instructions [here](./projects/multi_tier_app/readme.md)
 
-### React App
+### Fibonacci Calculator app
 
-This example uses Github Actions to build and test and then deploy to Docker Hub. See [here](./projects/fibonacci_calculator/readme.md)
+This example uses docker compose to build the networking between in each container. The project has several dockerfiles...
 
-### PostgreSQL
+[API](./projects/fibonacci_calculator/api/dockerfile)
+[Client](./projects/fibonacci_calculator/client/dockerfile)
+[Proxy](./projects/fibonacci_calculator/nginx/dockerfile)
+[Worker](./projects/fibonacci_calculator/worker/dockerfile)
 
-This example uses Github Actions to build and test and then deploy to Docker Hub. See [here](./projects/fibonacci_calculator/readme.md)
+which define how each container image should be built and [docker compose](./projects/fibonacci_calculator/docker-compose.yml) builds it and runs the containers with any additional instructions. The project depends on PostgreSQL and Redis; the docker compose file builds them from specified images hosted on Docker Hub. Instructions [here](./projects/fibonacci_calculator/readme.md)
 
-### NGinx
+In a cloud environment you may use managed instances of these. See these examples...
 
-This example uses Github Actions to build and test and then deploy to Docker Hub. See [here](./projects/fibonacci_calculator/readme.md)
+[Container Apps](https://github.com/heathen1878/ACA)
+[Container Instances](https://github.com/heathen1878/ACI)
+[Kubernetes](https://github.com/heathen1878/AKS)
 
 ## Useful links
 
