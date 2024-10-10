@@ -160,7 +160,7 @@ docker pull image_name
 docker pull busybox # pull the latest version of busybox
 ```
 
-### Docker Build {#docker-build}
+### Docker Build
 
 Build a Docker image from a dockerfile; `-f` is useful if the dockerfile isn't called dockerfile e.g. `dockerfile.dev`.
 
