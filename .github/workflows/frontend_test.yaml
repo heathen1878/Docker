@@ -4,7 +4,7 @@ on:
     branches:
       - '*'
     paths:
-      - 'projects/production_grade_flow/frontend/dockerfile*'
+      - 'projects/node_js_web_app_with_tests/frontend/dockerfile*'
 
 jobs:
   build:
@@ -13,7 +13,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./projects/production_grade_flow/frontend
+        working-directory: ./projects/node_js_web_app_with_tests/frontend
 
     steps:
       - name: checkout repository

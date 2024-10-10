@@ -4,7 +4,7 @@ on:
   push:
     branches: master
     paths:
-      - 'projects/production_grade_flow/worker/dockerfile*'
+      - 'projects/fibonacci_calculator/worker/dockerfile*'
   workflow_dispatch:
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
       
       - name: docker build
         run: |
-          cd ./projects/production_grade_flow/worker
+          cd ./projects/fibonacci_calculator/worker
           docker build -t ${{ vars.DOCKER_USERNAME }}/worker:${{ github.run_number }} -f dockerfile .
   
       - name: docker push
