@@ -411,8 +411,6 @@ Within the build context you can include a `.dockerignore` file which tells dock
   - application dependencies
 - small and secure :point_down:
 
-### Image size and security
-
 Generally it is best to try and use the `alpine` variant of the docker image and a specific version too.
 
 ```dockerfile
@@ -428,6 +426,22 @@ FROM node:lts-alpine
 ```dockerfile
 FROM golang:alpine
 ```
+
+- Protect the cache layer
+  - order copy commands by frequency of change
+  - use cache mounts
+  - use COPY --link - creates a new layer not tied to the previous layer
+  - combine steps that are always linked...using heredocs... :point_down:
+
+  ```dockerfile
+  RUN <<CMDS
+  apt update
+  apt upgrade -y
+  apt install iputils-ping -y
+  CMDS
+  ```
+
+
 
 ## Projects
 
