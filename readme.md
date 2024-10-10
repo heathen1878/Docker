@@ -168,6 +168,10 @@ Build a Docker image from a dockerfile; `-f` is useful if the dockerfile isn't c
 docker build -f ./dockerfile -t name:tag .
 ```
 
+pass in `--progress=plain` to enable a more verbose...
+
+if for some reason you wanted to disable caching pass in `--no-cache`
+
 ### Docker Image
 
 List the images available locally...
@@ -199,6 +203,17 @@ $dom in ../Docker on  main [ 📝  🗃️  ×2 ]
 2s bash $ ➜ sudo docker image ls
 REPOSITORY                     TAG       IMAGE ID       CREATED         SIZE
 heathen1878/basic              latest    755bfc9736da   2 hours ago     7.8MB
+```
+
+To remove multiple images you could use something like...
+
+```shell
+images=$(sudo docker image list --all --format json | jq -rc .ID)
+
+for image in $images
+do
+   sudo docker image rm $image --force
+done
 ```
 
 ### Docker Run
@@ -380,21 +395,6 @@ Execute image build i.e. `docker build --tag your_docker_id/name:tag_value .`
 
 ...
 
-### Container
-
-[Dockerfile teardown](./redis_server/teardown.md)
-
-[Docker Example](./redis_server/dockerfile)
-
-```shell
-# cd into dockerfile document
-docker build --tag your_docker_id/name:tag_value .
-```
-
-pass in `--progress=plain` to enable a more verbose...
-
-if for some reason you wanted to disable caching pass in `--no-cache`
-
 #### Manual image
 
 `docker run -it apline` :point_left: grab the ID of this container.
@@ -485,12 +485,16 @@ This example uses Github Actions to build and test and then deploy to Docker Hub
 
 ### PostgreSQL
 
-...
+This example uses Github Actions to build and test and then deploy to Docker Hub. See [here](./projects/production_grade_flow/readme.md)
 
 ### NGinx
 
-...
+This example uses Github Actions to build and test and then deploy to Docker Hub. See [here](./projects/production_grade_flow/readme.md)
 
 ## Useful links
 
 [Willy Wonka](https://www.youtube.com/watch?v=GsLZz8cZCzc)
+
+[Dockerfile teardown](./redis_server/teardown.md)
+
+[Docker Example](./redis_server/dockerfile)
