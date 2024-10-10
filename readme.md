@@ -160,7 +160,7 @@ docker pull image_name
 docker pull busybox # pull the latest version of busybox
 ```
 
-### Docker Build
+### Docker Build {#docker-build}
 
 Build a Docker image from a dockerfile; `-f` is useful if the dockerfile isn't called dockerfile e.g. `dockerfile.dev`.
 
@@ -396,6 +396,10 @@ Tmpfs mounts are in-memory storage...
 run the commands within the container...
 
 `docker commit -c 'CMD [ "redis-server" ] container-id`
+
+## Dockerfile
+
+The dockerfile is a text documentation that contains instructions that docker should execute; see [docker build](#docker-build)
 
 ## Projects
 
