@@ -477,19 +477,19 @@ This is a simple Node Js web app running as a container - see [here](./projects/
 
 ### Multi tier app
 
-This example uses docker compose to build the networking between in each container. See [here](./projects/multi_tier_app/readme.md)
+This example uses docker compose to build the networking between in each container. See [here](./projects/fibonacci_calculator/readme.md)
 
 ### React App
 
-This example uses Github Actions to build and test and then deploy to Docker Hub. See [here](./projects/production_grade_flow/readme.md)
+This example uses Github Actions to build and test and then deploy to Docker Hub. See [here](./projects/fibonacci_calculator/readme.md)
 
 ### PostgreSQL
 
-This example uses Github Actions to build and test and then deploy to Docker Hub. See [here](./projects/production_grade_flow/readme.md)
+This example uses Github Actions to build and test and then deploy to Docker Hub. See [here](./projects/fibonacci_calculator/readme.md)
 
 ### NGinx
 
-This example uses Github Actions to build and test and then deploy to Docker Hub. See [here](./projects/production_grade_flow/readme.md)
+This example uses Github Actions to build and test and then deploy to Docker Hub. See [here](./projects/fibonacci_calculator/readme.md)
 
 ## Useful links
 
