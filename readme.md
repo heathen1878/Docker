@@ -397,20 +397,36 @@ run the commands within the container...
 
 `docker commit -c 'CMD [ "redis-server" ] container-id`
 
-## Dockerfile
+## Dockerfiles
 
 The dockerfile is a text documentation that contains instructions that docker should execute; see [docker build](#docker-build). The `.` represents the build context i.e. where the source code resides.
 
 Within the build context you can include a `.dockerignore` file which tells docker to ignore files, folders...
 
+### Principles
+
+- Pin specific versions
+- base images
+  - system dependencies
+  - application dependencies
+- small and secure :point_down:
+
 ### Image size and security
 
-Generally it is best to try and use the `alpine` variant of the docker image.
+Generally it is best to try and use the `alpine` variant of the docker image and a specific version too.
 
 ```dockerfile
-FROM ubuntu:alpine
+FROM almalinux:8-minimal
+```
 
+or for language specific images...
 
+```dockerfile
+FROM node:lts-alpine
+```
+
+```dockerfile
+FROM golang:alpine
 ```
 
 ## Projects
