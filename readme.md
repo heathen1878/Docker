@@ -385,12 +385,6 @@ Docker Compose is useful when you need to pass many options to Docker.
 
 Tmpfs mounts are in-memory storage...
 
-## Docker Server
-
-Docker Server will check the image cache for cached copies of the requested image.
-
-Execute image build i.e. `docker build --tag your_docker_id/name:tag_value .`
-
 ### Specifying alternative docker container registries
 
 ...
@@ -488,8 +482,11 @@ This example uses docker compose to build the networking between in each contain
 This example uses docker compose to build the networking between in each container. The project has several dockerfiles...
 
 [API](./projects/fibonacci_calculator/api/dockerfile)
+
 [Client](./projects/fibonacci_calculator/client/dockerfile)
+
 [Proxy](./projects/fibonacci_calculator/nginx/dockerfile)
+
 [Worker](./projects/fibonacci_calculator/worker/dockerfile)
 
 which define how each container image should be built and [docker compose](./projects/fibonacci_calculator/docker-compose.yml) builds it and runs the containers with any additional instructions. The project depends on PostgreSQL and Redis; the docker compose file builds them from specified images hosted on Docker Hub. Instructions [here](./projects/fibonacci_calculator/readme.md)
@@ -497,7 +494,9 @@ which define how each container image should be built and [docker compose](./pro
 In a cloud environment you may use managed instances of these. See these examples...
 
 [Container Apps](https://github.com/heathen1878/ACA)
+
 [Container Instances](https://github.com/heathen1878/ACI)
+
 [Kubernetes](https://github.com/heathen1878/AKS)
 
 ## Useful links
