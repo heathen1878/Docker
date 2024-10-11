@@ -430,7 +430,7 @@ FROM golang:alpine
 - Protect the cache layer
   - order copy commands by frequency of change
   - use cache mounts
-  - use COPY --link - creates a new layer not tied to the previous layer
+  - use COPY --link - creates a new layer not tied to the previous layer # Requires dockerfile version 1.5
   - combine steps that are always linked...using heredocs... :point_down:
 
   ```dockerfile
@@ -440,7 +440,7 @@ FROM golang:alpine
   apt install iputils-ping -y
   CMDS
   ```
-  
+
 - Set the working directory
 - Set the expose port
 - Define any environmental variables
@@ -462,6 +462,19 @@ USER nonroot
 
 FROM image:version as build-base
 COPY --from=build-base /some/file /some/file
+```
+
+- Directives
+  - version
+  - escape characters
+- Label
+  - Add author details
+
+```dockerfile
+# syntax=docker/dockerfile:1.5
+# escape=\
+
+LABEL org.opencontainers.image.authors="bob@domain.com"
 ```
 
 ## Projects
