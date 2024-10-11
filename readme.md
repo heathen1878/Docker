@@ -443,12 +443,14 @@ FROM golang:alpine
 
 - Set the working directory
 - Set the expose port
-- Define any environmental variables
+- Define any environmental variables - can be used at build and runtime
+- Define any build arguments - can only be used at build time
 
 ```dockerfile
 WORKDIR /app
 EXPOSE 8080
 ENV variable=env_var
+ARG variable=build_var
 ```
 
 - Use `.dockerignore`
