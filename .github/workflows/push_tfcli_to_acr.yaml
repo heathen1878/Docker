@@ -10,7 +10,7 @@ on:
 jobs:
   push_to_registry:
     runs-on: ubuntu-latest
-    name: Push tfcli to Docker Hub
+    name: Push tfcli to ACR
     permissions:
       contents: write
       pull-requests: write
@@ -34,5 +34,5 @@ jobs:
   
       - name: docker push
         run: |
-          docker image push ${{ vars.ACR }}/tfcli:${{ vars.TFCLI_TAG }}
-          docker image push ${{ vars.ACR }}/tfcli:latest
+          docker image push ${{ vars.ACR }}.azurecr.io/tfcli:${{ vars.TFCLI_TAG }}
+          docker image push ${{ vars.ACR }}.azurecr.io/tfcli:latest
