@@ -1,0 +1,38 @@
+name: Push Terraform Cli To Azure Container Registry
+
+on:
+  push:
+    branches: master
+    paths:
+      - 'projects/terraform_wrapper/dockerfile*'
+  workflow_dispatch:
+
+jobs:
+  push_to_registry:
+    runs-on: ubuntu-latest
+    name: Push tfcli to Docker Hub
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Login to ACR
+        uses: azure/docker-login@v2
+        with:
+          login-server: ${{ vars.ACR }}
+          username: ${{ secrets.ARM_CLIENT_ID }}
+          password: ${{ secrets.ARM_CLIENT_SECRET }}
+      
+      - name: docker build
+        run: |
+          cd ./projects/terraform_wrapper
+          docker build -t ${{ vars.ACR }}/tfcli:${{ vars.TFCLI_TAG }} -t ${{ vars.ACR }}/tfcli:latest -f dockerfile .
+  
+      - name: docker push
+        run: |
+          docker image push ${{ vars.ACR }}/tfcli:${{ vars.TFCLI_TAG }}
+          docker image push ${{ vars.ACR }}/tfcli:latest

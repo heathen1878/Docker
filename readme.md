@@ -119,10 +119,6 @@ docker --version
 
 Passes commands to the Docker Server
 
-### Credential helpers
-
-...
-
 ### Extensions
 
 ...
@@ -387,6 +383,33 @@ Tmpfs mounts are in-memory storage...
 
 ### Specifying alternative docker container registries
 
+#### Azure Container Registry
+
+Use az cli for Azure Container Registry
+
+__NOTE:__ If you need to use `sudo` prefix all the commands below with `sudo`.
+
+```shell
+az login
+
+# List out the container registries...and take the first one...
+acr=$(az acr list | jq -rc .[0].name)
+
+# Authenticate
+az acr login --name $acr
+
+# Tag for ACR
+# Use docker build -f dockerfile -t crmanual.azurecr.io/terraform_wrapper/tfcli:latest or tag an existing image using...
+docker tag heathen1878/tfcli $acr.azurecr.io/terraform_wrapper/tfcli:latest
+
+# Push to the ACR
+docker push acr_name.azurecr.io/repo/image:tag
+```
+
+See [here](.github/workflows/...) for GitHub Workflow for doing the above.
+
+#### Github Container Registry
+
 ...
 
 #### Manual image
@@ -476,8 +499,12 @@ COPY --from=build-base /some/file /some/file
 # syntax=docker/dockerfile:1.5
 # escape=\
 
-LABEL org.opencontainers.image.authors="bob@domain.com"
+LABEL org.opencontainers.image.authors="dom@domain.com"
 ```
+
+### Buildx
+
+Buildx allows you to create images for multiple architectures from a single dockerfile.
 
 ## Projects
 
