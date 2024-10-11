@@ -4,7 +4,7 @@ on:
     branches:
       - '*'
     paths:
-      - 'projects/production_grade_flow/client/dockerfile*'
+      - 'projects/fibonacci_calculator/client/dockerfile*'
   workflow_dispatch:
 
 jobs:
@@ -14,7 +14,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./projects/production_grade_flow/client
+        working-directory: ./projects/fibonacci_calculator/client
 
     steps:
       - name: checkout repository

@@ -4,11 +4,21 @@
 
 ### Tests
 
-[![Test Frontend Docker Build](https://github.com/heathen1878/Docker/actions/workflows/frontend_test.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/frontend_test.yaml)
+[![Test Frontend Docker Build](https://github.com/heathen1878/Docker/actions/workflows/frontend_test.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/frontend_test.yaml) [![Test Client Docker Build](https://github.com/heathen1878/Docker/actions/workflows/client_test.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/client_test.yaml)
 
 ### Builds
 
-[![Push Frontend To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml)
+#### NodeJs Web App
+
+[![Push Frontend To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml) 
+
+#### Fibonacci Calculator
+
+[![Push Api To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_api_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_api_to_dh.yaml) [![Push Client To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_client_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_client_to_dh.yaml) [![Push Nginx To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml) [![Push Nginx To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml)
+
+#### Terraform Cli
+
+[![Push Terraform Cli To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_tfcli_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_tfcli_to_dh.yaml)
 
 ## Introduction
 
@@ -109,10 +119,6 @@ docker --version
 
 Passes commands to the Docker Server
 
-### Credential helpers
-
-...
-
 ### Extensions
 
 ...
@@ -158,6 +164,10 @@ Build a Docker image from a dockerfile; `-f` is useful if the dockerfile isn't c
 docker build -f ./dockerfile -t name:tag .
 ```
 
+pass in `--progress=plain` to enable a more verbose...
+
+if for some reason you wanted to disable caching pass in `--no-cache`
+
 ### Docker Image
 
 List the images available locally...
@@ -189,6 +199,17 @@ $dom in ../Docker on  main [ 📝  🗃️  ×2 ]
 2s bash $ ➜ sudo docker image ls
 REPOSITORY                     TAG       IMAGE ID       CREATED         SIZE
 heathen1878/basic              latest    755bfc9736da   2 hours ago     7.8MB
+```
+
+To remove multiple images you could use something like...
+
+```shell
+images=$(sudo docker image list --all --format json | jq -rc .ID)
+
+for image in $images
+do
+   sudo docker image rm $image --force
+done
 ```
 
 ### Docker Run
@@ -360,30 +381,36 @@ Docker Compose is useful when you need to pass many options to Docker.
 
 Tmpfs mounts are in-memory storage...
 
-## Docker Server
-
-Docker Server will check the image cache for cached copies of the requested image.
-
-Execute image build i.e. `docker build --tag your_docker_id/name:tag_value .`
-
 ### Specifying alternative docker container registries
 
-...
+#### Azure Container Registry
 
-### Container
+Use az cli for Azure Container Registry
 
-[Dockerfile teardown](./redis_server/teardown.md)
-
-[Docker Example](./redis_server/dockerfile)
+__NOTE:__ If you need to use `sudo` prefix all the commands below with `sudo`.
 
 ```shell
-# cd into dockerfile document
-docker build --tag your_docker_id/name:tag_value .
+az login
+
+# List out the container registries...and take the first one...
+acr=$(az acr list | jq -rc .[0].name)
+
+# Authenticate
+az acr login --name $acr
+
+# Tag for ACR
+# Use docker build -f dockerfile -t crmanual.azurecr.io/terraform_wrapper/tfcli:latest or tag an existing image using...
+docker tag heathen1878/tfcli $acr.azurecr.io/terraform_wrapper/tfcli:latest
+
+# Push to the ACR
+docker push acr_name.azurecr.io/repo/image:tag
 ```
 
-pass in `--progress=plain` to enable a more verbose...
+See [here](.github/workflows/...) for GitHub Workflow for doing the above.
 
-if for some reason you wanted to disable caching pass in `--no-cache`
+#### Github Container Registry
+
+...
 
 #### Manual image
 
@@ -392,6 +419,92 @@ if for some reason you wanted to disable caching pass in `--no-cache`
 run the commands within the container...
 
 `docker commit -c 'CMD [ "redis-server" ] container-id`
+
+## Dockerfiles
+
+The dockerfile is a text documentation that contains instructions that docker should execute; see [docker build](#docker-build). The `.` represents the build context i.e. where the source code resides.
+
+Within the build context you can include a `.dockerignore` file which tells docker to ignore files, folders...
+
+### Principles
+
+- Pin specific versions
+- base images
+  - system dependencies
+  - application dependencies
+- small and secure :point_down:
+
+Generally it is best to try and use the `alpine`, `slim`, `minimal`, or whichever variant defines small of the docker image; and a specific version too.
+
+```dockerfile
+FROM almalinux:8-minimal
+```
+
+or for language specific images...
+
+```dockerfile
+FROM node:lts-alpine
+```
+
+```dockerfile
+FROM golang:alpine
+```
+
+- Protect the cache layer
+  - order copy commands by frequency of change
+  - use cache mounts
+  - use COPY --link - creates a new layer not tied to the previous layer # Requires dockerfile version 1.5
+  - combine steps that are always linked...using heredocs... :point_down:
+
+  ```dockerfile
+  RUN <<CMDS
+  apt update
+  apt upgrade -y
+  apt install iputils-ping -y
+  CMDS
+  ```
+
+- Set the working directory
+- Set the expose port
+- Define any environmental variables - can be used at build and runtime
+- Define any build arguments - can only be used at build time
+
+```dockerfile
+WORKDIR /app
+EXPOSE 8080
+ENV variable=env_var
+ARG variable=build_var
+```
+
+- Use `.dockerignore`
+
+- Use a non root user
+- Ensure only the required dependencies are installed...between dev and prod
+- Use multi stage builds
+
+```dockerfile
+USER nonroot
+
+FROM image:version as build-base
+COPY --from=build-base /some/file /some/file
+```
+
+- Directives
+  - version
+  - escape characters
+- Label
+  - Add author details
+
+```dockerfile
+# syntax=docker/dockerfile:1.5
+# escape=\
+
+LABEL org.opencontainers.image.authors="dom@domain.com"
+```
+
+### Buildx
+
+Buildx allows you to create images for multiple architectures from a single dockerfile.
 
 ## Projects
 
@@ -435,6 +548,10 @@ Using Docker Compose...
 sudo -E docker compose --project-directory projects/postgresql/ up
 ```
 
+#### Redis
+
+...
+
 ### Interactive test environments
 
 Useful for running code against runtime not installed locally.
@@ -463,24 +580,42 @@ exit
 
 ### Node Js
 
-This is a simple Node Js web app running as a container - see [here](./projects/node_js_web_app/readme.md)
+This is a simple Node Js web app running as a container; see instructions [here](./projects/node_js_web_app/readme.md)
 
 ### Multi tier app
 
-This example uses docker compose to build the networking between in each container. See [here](./projects/multi_tier_app/readme.md)
+This example uses docker compose to build the networking between in each container. The [dockerfile](./projects/multi_tier_app/dockerfile) defines how the image should be built and [docker compose](./projects/multi_tier_app/docker-compose.yml) builds it and run the container with any additional instructions. Instructions [here](./projects/multi_tier_app/readme.md)
 
-### React App
+### Fibonacci Calculator app
 
-This example uses Github Actions to build and test and then deploy to Docker Hub. See [here](./projects/production_grade_flow/readme.md)
+This example uses docker compose to build the networking between in each container. The project has several dockerfiles...
 
-### PostgreSQL
+[API](./projects/fibonacci_calculator/api/dockerfile)
 
-...
+[Client](./projects/fibonacci_calculator/client/dockerfile)
 
-### NGinx
+[Proxy](./projects/fibonacci_calculator/nginx/dockerfile)
+
+[Worker](./projects/fibonacci_calculator/worker/dockerfile)
+
+which define how each container image should be built and [docker compose](./projects/fibonacci_calculator/docker-compose.yml) builds it and runs the containers with any additional instructions. The project depends on PostgreSQL and Redis; the docker compose file builds them from specified images hosted on Docker Hub. Instructions [here](./projects/fibonacci_calculator/readme.md)
+
+In a cloud environment you may use managed instances of these. See these examples...
+
+[Container Apps](https://github.com/heathen1878/ACA)
+
+[Container Instances](https://github.com/heathen1878/ACI)
+
+[Kubernetes](https://github.com/heathen1878/AKS)
+
+### Node and Go API with React Frontend
 
 ...
 
 ## Useful links
 
 [Willy Wonka](https://www.youtube.com/watch?v=GsLZz8cZCzc)
+
+[Dockerfile teardown](./redis_server/teardown.md)
+
+[Docker Example](./redis_server/dockerfile)
