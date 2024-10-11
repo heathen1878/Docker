@@ -381,7 +381,15 @@ Docker Compose is useful when you need to pass many options to Docker.
 
 Tmpfs mounts are in-memory storage...
 
-### Specifying alternative docker container registries
+### Container Registries
+
+#### Docker Hub
+
+Default public registry, use docker login.
+
+```shell
+docker login
+```
 
 #### Azure Container Registry
 
@@ -408,9 +416,13 @@ docker push acr_name.azurecr.io/repo/image:tag
 
 See [here](.github/workflows/push_tfcli_to_acr.yaml) for GitHub Workflow for doing the above.
 
-#### Github Container Registry
+#### Webhooks
 
-...
+Webhooks are useful to notify other applications that an application or service image has been built or updated.
+
+#### Tagging
+
+Images should be tagged using semantic versioning but you'll see lots of different methods; most are descriptive see [here](https://hub.docker.com/_/alpine/tags) for examples.
 
 #### Manual image
 
