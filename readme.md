@@ -406,7 +406,7 @@ docker tag heathen1878/tfcli $acr.azurecr.io/terraform_wrapper/tfcli:latest
 docker push acr_name.azurecr.io/repo/image:tag
 ```
 
-See [here](.github/workflows/...) for GitHub Workflow for doing the above.
+See [here](.github/workflows/push_tfcli_to_acr.yaml) for GitHub Workflow for doing the above.
 
 #### Github Container Registry
 
