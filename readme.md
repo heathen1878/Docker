@@ -244,6 +244,8 @@ To generate this message, Docker took the following steps:
 
 #### Overriding the startup command
 
+This is similar to overiding the entrypoint using `--entrypoint`.
+
 ```shell
 docker run busybox ls
 ```
@@ -280,6 +282,64 @@ $dom in ../Docker on  main [ 📝  🗃️  ×2 ]
 ```
 
 ![frontend](images/frontend.png)
+
+### Init
+
+The init flag can be used to ensure the init process runs as `PID 1`; therefore can control cleaning up zombie processes and handling signal forwarding. If you have coded for signal handling and are unlikely to have any zombie processes then `--init` isn't needed.
+
+### Name
+
+Used to assign a predefined name to a container; __NOTE__ containers must be unique on your computer.
+
+### Network
+
+Allows you to connect to a predefined Docker network; by default all containers share the same network.
+
+### Platform
+
+Useful to pull specific image platform architecture e.g. arm, amd64...
+
+### Restart
+
+USed to define the restart policy for a container; the options are no restart, restart on failure and optionally retry x no. of times, restart unless stopped or always restart.
+
+```shell
+docker run --restart always ubuntu
+
+watch "docker container list"
+```
+
+### Advanced options
+
+#### Capabilities
+
+You can use `--cap-drop=all` and then `--cap-add=blah` to lock down the runtime security of the container.
+
+#### CPU and CPU Shares
+
+`--cpus` can limit the number of core allocated to a container and `--cpu-shares` can assign a relative share of CPU time to a container.
+
+#### Memory and memory reservation
+
+`--memory` can limit the memory allocated to a container; should it exceed that amount it will be restarted whereas memory reservation guarantee an amount of memory.
+
+#### User
+
+`--user` allow you to specify a non root user; by default the container will run as root. Ideally the dockerfile would specify the `USER` instruction to ensure that user is used to run the entrypoint and cmd. If the group is not specified then the user will be run with the root group.
+
+#### Read only
+
+`--read-only` this forces the container file system to be read only...
+
+#### Security Options
+
+[seccomp](seccomp)
+
+[apparmour](apparmor)
+
+#### User Namespace remapping
+
+[here](userns-remap)
 
 ## Docker Container
 
@@ -514,6 +574,12 @@ COPY --from=build-base /some/file /some/file
 LABEL org.opencontainers.image.authors="dom@domain.com"
 ```
 
+#### Security
+
+Scan your images...
+
+[docker snyk](https://docs.snyk.io/getting-started)
+
 ### Buildx
 
 Buildx allows you to create images for multiple architectures from a single dockerfile.
@@ -557,6 +623,7 @@ Using Docker Compose...
 
 ```shell
 # passing sudo -E to expose the postgres password to Docker Compose. The script create_environment_variables.sh can pull values from KV or GitHub and create environmental variables.
+
 sudo -E docker compose --project-directory projects/postgresql/ up
 ```
 
