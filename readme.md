@@ -168,7 +168,29 @@ pass in `--progress=plain` to enable a more verbose...
 
 if for some reason you wanted to disable caching pass in `--no-cache`
 
+#### History
+
+To view how an image was built, you can use the `history` command.
+
+```shell
+docker login
+
+images=$(docker image list --all --format json | jq -rc .ID)
+
+for image in $images
+do
+  # Docker scout is a separate application that needs installing
+  docker scout cves $image
+done
+```
+
 ### Docker Image
+
+#### Inspect
+
+Inspect outputs the image as `json`.
+
+#### List
 
 List the images available locally...
 
@@ -211,6 +233,10 @@ do
    sudo docker image rm $image --force
 done
 ```
+
+#### Prune
+
+Removes any images not associated with a container.
 
 ### Docker Run
 
@@ -329,9 +355,15 @@ You can use `--cap-drop=all` and then `--cap-add=blah` to lock down the runtime 
 
 #### Read only
 
-`--read-only` this forces the container file system to be read only...
+`--read-only` this forces the container file system to be read only; works well with volume or tmpfs mounts for locations that require writes.
 
 #### Security Options
+
+Docker scout can be used to look for vulnerabilities in images.
+
+```shell
+docker scout cves image_name
+```
 
 [seccomp](seccomp)
 
@@ -343,7 +375,7 @@ You can use `--cap-drop=all` and then `--cap-add=blah` to lock down the runtime 
 
 ## Docker Container
 
-### List
+### List containers
 
 From the example above the running container is...
 
