@@ -23,14 +23,14 @@ jobs:
       - name: Login to ACR
         uses: azure/docker-login@v2
         with:
-          login-server: ${{ vars.ACR }}
+          login-server: ${{ vars.ACR }}.azurecr.io
           username: ${{ secrets.ARM_CLIENT_ID }}
           password: ${{ secrets.ARM_CLIENT_SECRET }}
       
       - name: docker build
         run: |
           cd ./projects/terraform_wrapper
-          docker build -t ${{ vars.ACR }}/tfcli:${{ vars.TFCLI_TAG }} -t ${{ vars.ACR }}/tfcli:latest -f dockerfile .
+          docker build -t ${{ vars.ACR }}.azurecr.io/tfcli:${{ vars.TFCLI_TAG }} -t ${{ vars.ACR }}.azurecr.io/tfcli:latest -f dockerfile .
   
       - name: docker push
         run: |

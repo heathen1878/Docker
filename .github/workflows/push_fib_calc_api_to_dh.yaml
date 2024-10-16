@@ -1,4 +1,4 @@
-name: Push Api To Docker Hub
+name: Push Fibonacci Calculator Api To Docker Hub
 
 on:
   push:
