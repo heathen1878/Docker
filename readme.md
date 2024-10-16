@@ -4,7 +4,7 @@
 
 ### Tests
 
-[![Test Frontend Docker Build](https://github.com/heathen1878/Docker/actions/workflows/frontend_test.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/frontend_test.yaml) [![Test Client Docker Build](https://github.com/heathen1878/Docker/actions/workflows/client_test.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/client_test.yaml)
+[![Test Frontend Docker Build](https://github.com/heathen1878/Docker/actions/workflows/frontend_test.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/frontend_test.yaml) [![Test Client Docker Build](https://github.com/heathen1878/Docker/actions/workflows/client_test.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/client_test.yaml) [![Test Fibonacci Calculator Api](https://github.com/heathen1878/Docker/actions/workflows/fib_calc_api_test.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/fib_calc_api_test.yaml)
 
 ### Builds
 
@@ -14,7 +14,7 @@
 
 #### Fibonacci Calculator
 
-[![Push Api To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_api_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_api_to_dh.yaml) [![Push Client To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_client_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_client_to_dh.yaml) [![Push Nginx To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml) [![Push Nginx To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml)
+[![Push Fibonacci Calculator Api To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_fib_calc_api_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_fib_calc_api_to_dh.yaml) [![Push Client To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_client_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_client_to_dh.yaml) [![Push Nginx To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml) [![Push Nginx To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml)
 
 #### Terraform Cli
 
