@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:15.1-alpine
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: /run/secrets/postgres_password
+    secrets:
+      - postgres_password
+    networks:
+      - backend
+    ports:
+      - 5432:5432
+  api-golang:
+    image: api-golang
+    build:
+      context: ./api_go_lang/
+      dockerfile: ./dockerfile
+      target: dev
+    init: true
+    volumes:
+      - type: bind
+        source: ./api_go_lang/
+        target: /app/
+    depends_on:
+      - db
+    environment:
+      PGUSER: postgres
+      PGHOST: db
+      PGDATABASE: postgres
+      PGPORT: 5432
+      PGPASSWORD: /run/secrets/postgres_password
+    networks:
+      - frontend
+      - backend
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+secrets:
+  postgres_password:
+    environment: PGPASSWORD
+volumes:
+  pgdata:
+networks:
+  frontend:
+  backend:
