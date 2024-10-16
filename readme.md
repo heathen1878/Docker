@@ -10,7 +10,7 @@
 
 #### NodeJs Web App
 
-[![Push Frontend To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml) 
+[![Push Frontend To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_frontend_to_dh.yaml)
 
 #### Fibonacci Calculator
 
@@ -365,6 +365,13 @@ Docker scout can be used to look for vulnerabilities in images.
 docker scout cves image_name
 ```
 
+```text
+    ✓ Image stored for indexing
+    ✓ Indexed 130 packages
+    ✗ Detected 5 vulnerable packages with a total of 5 vulnerabilities
+    ...
+```
+
 [seccomp](seccomp)
 
 [apparmour](apparmor)
@@ -374,6 +381,14 @@ docker scout cves image_name
 [here](userns-remap)
 
 ## Docker Container
+
+### Attach
+
+Attach to a container stdin...
+
+```shell
+docker attach container_id
+```
 
 ### List containers
 
@@ -410,7 +425,7 @@ If the container doesn't stop after 10 seconds when docker stop was issued then 
 
 ## Docker System
 
-### Prune
+### System prune
 
 ```shell
 docker system prune
@@ -422,6 +437,9 @@ docker system prune
 
 ```shell
 docker logs container id
+
+# to tail logs
+docker logs container_id -f 
 ```
 
 ## Docker Exec
