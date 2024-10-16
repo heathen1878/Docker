@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"time"
 
@@ -11,16 +13,13 @@ import (
 )
 
 func init() {
-	databaseUrl := os.Getenv("DATABASE_URL")
-	if databaseUrl == "" {
-		content, err := os.ReadFile(os.Getenv("DATABASE_URL_FILE"))
-		if err != nil {
-			log.Fatal(err)
-		}
-		databaseUrl = string(content)
-	}
+	databaseUrl := fmt.Sprintf(
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		os.Getenv("PGHOST"), os.Getenv("PGPORT"), os.Getenv("PGUSER"), os.Getenv("PGPASSWORD"), os.Getenv("PGDATABASE"),
+	)
 
 	errDB := database.InitDB(databaseUrl)
+
 	if errDB != nil {
 		log.Fatalf("⛔ Unable to connect to database: %v\n", errDB)
 	} else {
@@ -36,7 +35,7 @@ func main() {
 
 	r.GET("/", func(c *gin.Context) {
 		tm = database.GetTime(c)
-		c.JSON(200, gin.H{
+		c.JSON(http.StatusOK, gin.H{
 			"api": "golang",
 			"now": tm,
 		})
@@ -44,8 +43,10 @@ func main() {
 
 	r.GET("/ping", func(c *gin.Context) {
 		tm = database.GetTime(c)
-		c.JSON(200, "pong")
+		c.JSON(http.StatusOK, gin.H{
+			"message": "pong",
+		})
 	})
 
-	r.Run() // listen and serve on 0.0.0.0:8080 (or "PORT" env var)
+	r.Run()
 }

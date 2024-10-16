@@ -626,9 +626,7 @@ LABEL org.opencontainers.image.authors="dom@domain.com"
 
 #### Security
 
-Scan your images...
-
-[docker snyk](https://docs.snyk.io/getting-started)
+Scan your images using [Snyk](https://docs.snyk.io/getting-started). Example in the [workflow](.github/workflows/fib_calc_api_test.yaml). You can also use Docker Scout too amongst others.
 
 ### Buildx
 
