@@ -26,7 +26,6 @@ jobs:
     
       - name: Build Image
         run: |
-          cd ./projects/fibonacci_calculator/api
           docker build -t ${{ vars.DOCKER_USERNAME }}/api:${{ github.run_number }} -f dockerfile .
       
       - name: Check for vulnerabilities
