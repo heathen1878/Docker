@@ -1,0 +1,4 @@
+node_modules
+.npm
+dockerfile
+README.md

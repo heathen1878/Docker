@@ -1,0 +1,100 @@
+services:
+  db:
+    image: postgres:15.1-alpine
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: /run/secrets/postgres_password
+    secrets:
+      - postgres_password
+    networks:
+      - backend
+  api-golang:
+    image: api-golang
+    build:
+      context: ./api_go_lang/
+      dockerfile: ./dockerfile
+      target: dev
+    init: true
+    volumes:
+      - type: bind
+        source: ./api_go_lang/
+        target: /app/
+    depends_on:
+      - db
+    environment:
+      PGUSER: postgres
+      PGHOST: db
+      PGDATABASE: postgres
+      PGPORT: 5432
+      PGPASSWORD: /run/secrets/postgres_password
+    networks:
+      - backend
+    restart: unless-stopped
+  api-node:
+    image: api-node
+    build:
+      context: ./api_node/
+      dockerfile: ./dockerfile
+      target: dev
+    init: true
+    volumes:
+      - type: bind
+        source: ./api_node/
+        target: /usr/src/app/
+      - type: volume
+        target: /usr/src/app/node_modules
+    depends_on:
+      - db
+    environment:
+      PGUSER: postgres
+      PGHOST: db
+      PGDATABASE: postgres
+      PGPORT: 5432
+      PGPASSWORD: /run/secrets/postgres_password
+    networks:
+      - backend
+    restart: unless-stopped
+  client:
+    image: client
+    build:
+      context: ./react_client/
+      dockerfile: ./dockerfile
+      target: dev
+    init: true
+    volumes:
+      - type: bind
+        source: ./react_client/
+        target: /usr/src/app/
+      - type: volume
+        target: /usr/src/app/node_modules
+      - type: bind
+        source: ./react_client/config/vite.config.js
+        target: /usr/src/app/vite.config.js
+    depends_on:
+      - api-golang
+      - api-node
+    networks:
+      - backend
+    restart: unless-stopped
+  nginx:
+    image: nginx
+    build:
+      context: ./nginx
+      dockerfile: ./dockerfile
+    init: true
+    networks:
+      - frontend
+      - backend
+    ports:
+      - 80:80
+    restart: unless-stopped
+secrets:
+  postgres_password:
+    environment: PGPASSWORD
+volumes:
+  pgdata:
+networks:
+  frontend:
+  backend:

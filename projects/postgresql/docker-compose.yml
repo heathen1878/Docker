@@ -1,0 +1,32 @@
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: dockerfile
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: /run/secrets/postgres_password
+      POSTGRES_DB: values
+    ports:
+      - "5432:5432"
+    secrets:
+      - postgres_password
+    volumes:
+      - sqldata:/var/lib/postgresql/data
+  ubuntu:
+    depends_on:
+      - postgres
+    image: "ubuntu:latest"
+    command: >
+      bash -c "apt-get update && apt-get upgrade --yes
+      && apt-get install postgresql-client --yes
+      && psql -h postgres -U postgres -w -d values -c 'SELECT * FROM pg_catalog.pg_tables;'"
+    environment:
+      PGPASSWORD: /run/secrets/postgres_password
+    secrets:
+      - postgres_password
+secrets:
+  postgres_password:
+    environment: PGPASSWORD
+volumes:
+  sqldata:
