@@ -747,10 +747,19 @@ Air is installed in the [Go Lang API](./projects/devops_directive_web_app/api_go
 
 Nodemon is defined within [package.json](./projects/devops_directive_web_app/api_node/package.json#L21) and installed and run in the [dockerfile](./projects/devops_directive_web_app/api_node/dockerfile#L20).
 
+### Debugging
+
+The [docker compose debug](./projects/devops_directive_web_app/docker-compose-debug.yml) file contains the overrides for the Node API and Go Lang API.
+
+```docker
+    command:
+      - "npm"
+      - "run"
+      - "debug-docker"
+```
+
+This overrides the command specified in the [dockerfile](./projects/devops_directive_web_app/api_node/dockerfile#L20) and executes[...](./projects/devops_directive_web_app/api_node/package.json#L9)
+
 ## Useful links
 
 [Willy Wonka](https://www.youtube.com/watch?v=GsLZz8cZCzc)
-
-[Dockerfile teardown](./redis_server/teardown.md)
-
-[Docker Example](./redis_server/dockerfile)
