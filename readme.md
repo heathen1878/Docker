@@ -745,7 +745,7 @@ The Go Lang API is using Air and the Node API is using Nodemon; this functionali
 
 Air is installed in the [Go Lang API](./projects/devops_directive_web_app/api_go_lang/dockerfile) container and configured by [air](./projects/devops_directive_web_app/api_go_lang/reload/.air.toml).
 
-Nodemon is defined within [package.json](./projects/devops_directive_web_app/api_node/package.json) and installed and run in the [dockerfile](./projects/devops_directive_web_app/api_node/dockerfile).
+Nodemon is defined within [package.json](./projects/devops_directive_web_app/api_node/package.json#L21) and installed and run in the [dockerfile](./projects/devops_directive_web_app/api_node/dockerfile#L20).
 
 ## Useful links
 
