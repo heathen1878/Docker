@@ -3,6 +3,8 @@
 *.tfstate
 *.tfstate.*
 
-**/tmp/*
+**/*/.npm/*
+**/_cacache/*
+**/_logs/*
 
-**/.npm/*
+**/tmp/*
