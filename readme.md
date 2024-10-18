@@ -749,16 +749,28 @@ Nodemon is defined within [package.json](./projects/devops_directive_web_app/api
 
 ### Debugging
 
-The [docker compose debug](./projects/devops_directive_web_app/docker-compose-debug.yml) file contains the overrides for the Node API and Go Lang API.
+The [docker compose debug](./projects/devops_directive_web_app/docker-compose-debug.yml) file contains the overrides for the Node API...
 
 ```docker
-    command:
-      - "npm"
-      - "run"
-      - "debug-docker"
+command:
+  - "npm"
+  - "run"
+  - "debug-docker"
 ```
 
 This overrides the command specified in the [dockerfile](./projects/devops_directive_web_app/api_node/dockerfile#L20) and executes[...](./projects/devops_directive_web_app/api_node/package.json#L9)
+
+and Go Lang API...
+
+```docker
+command:
+  - "dlv"
+  - "debug"
+  - "--headless"
+  ...
+```
+
+You can attach VS Code using the Run and Debug options and adding this [vscode configuration](.vscode/launch.json) to your repo.
 
 ## Useful links
 

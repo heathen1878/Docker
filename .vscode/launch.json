@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Attach to Node Debugger",
+            "type": "node",
+            "request": "attach",
+            "localRoot": "${workspaceFolder}/projects/devops_directive_web_app/api_node",            
+            "remoteRoot": "/usr/src/app",
+            "port": 9229            
+        },
+        {
+            "name": "Attach to Go Lang Debugger",
+            "type": "go",
+            "debugAdapter": "dlv-dap",
+            "mode": "remote",
+            "request": "attach",
+            "port": 4000,
+            "remotePath": "/app",
+            "substitutePath": [
+                {
+                    "from": "${workspaceFolder}/projects/devops_directive_web_app/api_go_lang",
+                    "to": "/app"
+                }
+            ]
+        }
+    ]
+}
