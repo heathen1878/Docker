@@ -772,6 +772,10 @@ command:
 
 You can attach VS Code using the Run and Debug options and adding this [vscode configuration](.vscode/launch.json) to your repo.
 
+### Testing
+
+The docker compose test file contains overrides for running tests for the applications..
+
 ## Useful links
 
 [Willy Wonka](https://www.youtube.com/watch?v=GsLZz8cZCzc)

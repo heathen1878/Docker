@@ -20,7 +20,42 @@ docker compose -f docker-compose-dev.yml -f docker-compose-debug.yml up
 
 ## Test
 
+You execute the tests defined within each application code repo on the containers using docker compose.
+
+```shell
+docker compose -f docker-compose-dev.yml -f docker-compose-test.yml run --build api-golang
+```
+
+```text
 ...
+?       api-golang      [no test files]
+?       api-golang/database     [no test files]
+?       api-golang/healthcheck  [no test files]
+=== RUN   TestOneEqualsOne
+--- PASS: TestOneEqualsOne (0.00s)
+PASS
+ok      api-golang/tests        0.003s
+```
+
+```shell
+docker compose -f docker-compose-dev.yml -f docker-compose-test.yml run --build api-node
+```
+
+```text
+...
+
+> api-node@1.0.0 test
+> jest
+
+ PASS  tests/example.test.js
+  ✓ This is a test that always passes (5 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        0.979 s
+Ran all test suites.
+```
 
 ## Prod
 
