@@ -737,7 +737,15 @@ In a cloud environment you may use managed instances of these. See these example
 
 ### Node and Go API with React Frontend
 
-...
+This example uses [docker compose](./projects/devops_directive_web_app/docker-compose-dev.yml) to build all the required containers and ensure all traffic is routed via nginx. The dockerfiles for each container are stored within the directory for that applicatione e.g. [Go Lang API](./projects/devops_directive_web_app/api_go_lang/dockerfile).
+
+### Hot Reloading
+
+The Go Lang API is using Air and the Node API is using Nodemon; this functionality requires each containers code repository be bind mounted; see the docker compose file link above.
+
+Air is installed in the [Go Lang API](./projects/devops_directive_web_app/api_go_lang/dockerfile) container and configured by [air](./projects/devops_directive_web_app/api_go_lang/reload/.air.toml).
+
+Nodemon is defined within [package.json](./projects/devops_directive_web_app/api_node/package.json) and installed and run in the [dockerfile](./projects/devops_directive_web_app/api_node/dockerfile).
 
 ## Useful links
 
