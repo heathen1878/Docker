@@ -18,9 +18,11 @@ You can attach vs code to the Node API container using port 9229 and Go API cont
 docker compose -f docker-compose-dev.yml -f docker-compose-debug.yml up
 ```
 
-## Test
+## Testing
 
 You execute the tests defined within each application code repo on the containers using docker compose.
+
+### Go Lang
 
 ```shell
 docker compose -f docker-compose-dev.yml -f docker-compose-test.yml run --build api-golang
@@ -36,6 +38,8 @@ docker compose -f docker-compose-dev.yml -f docker-compose-test.yml run --build 
 PASS
 ok      api-golang/tests        0.003s
 ```
+
+### Node
 
 ```shell
 docker compose -f docker-compose-dev.yml -f docker-compose-test.yml run --build api-node
