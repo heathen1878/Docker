@@ -1,0 +1,21 @@
+services:
+  api-node:
+    command:
+      - "npm"
+      - "run"
+      - "debug-docker"
+    ports:
+      - "9229:9229"
+  api-golang:
+    command:
+      - "dlv"
+      - "debug"
+      - "--headless"
+      - "--listen=:4000"
+      - "--log=true"
+      - "--api-version=2"
+      - "--accept-multiclient"
+      - "--continue"
+      - "--log-output=debugger,debuglineerr,gdbwire.lldbout,rpc"
+    ports:
+      - "4000:4000"

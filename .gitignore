@@ -2,3 +2,7 @@
 
 *.tfstate
 *.tfstate.*
+
+**/.npm
+**/tmp
+**__debug*
