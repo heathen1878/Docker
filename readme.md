@@ -626,9 +626,7 @@ LABEL org.opencontainers.image.authors="dom@domain.com"
 
 #### Security
 
-Scan your images...
-
-[docker snyk](https://docs.snyk.io/getting-started)
+Scan your images using [Snyk](https://docs.snyk.io/getting-started). Example in the [workflow](.github/workflows/fib_calc_api_test.yaml). You can also use Docker Scout too amongst others.
 
 ### Buildx
 
@@ -739,12 +737,49 @@ In a cloud environment you may use managed instances of these. See these example
 
 ### Node and Go API with React Frontend
 
+This example uses [docker compose](./projects/devops_directive_web_app/docker-compose-dev.yml) to build all the required containers and ensure all traffic is routed via nginx. The dockerfiles for each container are stored within the directory for that applicatione e.g. [Go Lang API](./projects/devops_directive_web_app/api_go_lang/dockerfile).
+
+### Hot Reloading
+
+The Go Lang API is using Air and the Node API is using Nodemon; this functionality requires each containers code repository be bind mounted; see the docker compose file link above.
+
+Air is installed in the [Go Lang API](./projects/devops_directive_web_app/api_go_lang/dockerfile) container and configured by [air](./projects/devops_directive_web_app/api_go_lang/reload/.air.toml).
+
+Nodemon is defined within [package.json](./projects/devops_directive_web_app/api_node/package.json#L21) and installed and run in the [dockerfile](./projects/devops_directive_web_app/api_node/dockerfile#L20).
+
+### Debugging
+
+The [docker compose debug](./projects/devops_directive_web_app/docker-compose-debug.yml) file contains the overrides for the Node API...
+
+```docker
+command:
+  - "npm"
+  - "run"
+  - "debug-docker"
+```
+
+This overrides the command specified in the [dockerfile](./projects/devops_directive_web_app/api_node/dockerfile#L20) and executes[...](./projects/devops_directive_web_app/api_node/package.json#L9)
+
+and Go Lang API...
+
+```docker
+command:
+  - "dlv"
+  - "debug"
+  - "--headless"
+  ...
+```
+
+You can attach VS Code using the Run and Debug options and adding this [vscode configuration](.vscode/launch.json) to your repo.
+
+### Testing
+
+The [docker compose test](./projects/devops_directive_web_app/docker-compose-test.yml) file contains overrides for running tests for the applications. See [here](./projects/devops_directive_web_app/README.md) for an example.
+
+## Deploying Containers
+
 ...
 
 ## Useful links
 
 [Willy Wonka](https://www.youtube.com/watch?v=GsLZz8cZCzc)
-
-[Dockerfile teardown](./redis_server/teardown.md)
-
-[Docker Example](./redis_server/dockerfile)
