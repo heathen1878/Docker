@@ -776,6 +776,10 @@ You can attach VS Code using the Run and Debug options and adding this [vscode c
 
 The [docker compose test](./projects/devops_directive_web_app/docker-compose-test.yml) file contains overrides for running tests for the applications. See [here](./projects/devops_directive_web_app/README.md) for an example.
 
+## Deploying Containers
+
+...
+
 ## Useful links
 
 [Willy Wonka](https://www.youtube.com/watch?v=GsLZz8cZCzc)
