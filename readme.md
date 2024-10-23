@@ -20,6 +20,10 @@
 
 [![Push Terraform Cli To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_tfcli_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_tfcli_to_dh.yaml) [![Push Terraform Cli To Azure Container Registry](https://github.com/heathen1878/Docker/actions/workflows/push_tfcli_to_acr.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_tfcli_to_acr.yaml)
 
+### Security
+
+[![Known Vulnerabilities](https://snyk.io/test/github/heathen1878/Docker/badge.svg)](https://snyk.io/test/github/heathen1878/Docker)
+
 ## Introduction
 
 ### What are containers?
