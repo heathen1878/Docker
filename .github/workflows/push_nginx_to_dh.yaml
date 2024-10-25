@@ -31,10 +31,12 @@ jobs:
         run: |
           cd ./projects/fibonacci_calculator/nginx
           docker build -t ${{ vars.DOCKER_USERNAME }}/nginx:${{ github.run_number }} -f dockerfile .
+          docker build -t ${{ vars.DOCKER_USERNAME }}/nginx:latest -f dockerfile .
   
       - name: docker push
         run: |
           docker image push ${{ vars.DOCKER_USERNAME }}/nginx:${{ github.run_number }}
+          docker image push ${{ vars.DOCKER_USERNAME }}/nginx:latest
       
       - name: Create App Token
         id: app_token
