@@ -5,6 +5,7 @@ on:
     branches: master
     paths:
       - 'projects/fibonacci_calculator/nginx/dockerfile*'
+      - 'projects/fibonacci_calculator/nginx/production/default.conf'
   workflow_dispatch:
 
 jobs:
