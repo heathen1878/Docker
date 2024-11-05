@@ -1,4 +1,4 @@
-name: Push Client To Docker Hub
+name: Push Fibonacci Calculator Client To Docker Hub
 
 on:
   push:

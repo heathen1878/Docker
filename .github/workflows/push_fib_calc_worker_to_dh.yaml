@@ -1,4 +1,4 @@
-name: Push Worker To Docker Hub
+name: Push Fibonacci Calculator Worker To Docker Hub
 
 on:
   push:

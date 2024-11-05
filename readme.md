@@ -16,6 +16,10 @@
 
 [![Push Fibonacci Calculator Api To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_fib_calc_api_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_fib_calc_api_to_dh.yaml) [![Push Client To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_client_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_client_to_dh.yaml) [![Push Nginx To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml) [![Push Nginx To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_nginx_to_dh.yaml)
 
+#### DevOps Directive Web App
+
+[![Push Go API To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_ddd_go_api_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_ddd_go_api_to_dh.yaml) [![Push Node API To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_ddd_node_api_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_ddd_node_api_to_dh.yaml) [![Push React Client To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_ddd_client_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_ddd_client_to_dh.yaml) [![Push DDD Ingress To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_ddd_nginx_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_ddd_nginx_to_dh.yaml)
+
 #### Terraform Cli
 
 [![Push Terraform Cli To Docker Hub](https://github.com/heathen1878/Docker/actions/workflows/push_tfcli_to_dh.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_tfcli_to_dh.yaml) [![Push Terraform Cli To Azure Container Registry](https://github.com/heathen1878/Docker/actions/workflows/push_tfcli_to_acr.yaml/badge.svg)](https://github.com/heathen1878/Docker/actions/workflows/push_tfcli_to_acr.yaml)
