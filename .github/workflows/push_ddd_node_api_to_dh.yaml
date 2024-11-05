@@ -1,17 +1,16 @@
-name: Push Nginx To Docker Hub
+name: Push Node API To Docker Hub
 
 on:
   push:
     branches: master
     paths:
-      - 'projects/fibonacci_calculator/nginx/dockerfile*'
-      - 'projects/fibonacci_calculator/nginx/production/default.conf'
+      - 'projects/devops_directive_web_app/api_node/dockerfile*'
   workflow_dispatch:
 
 jobs:
   push_to_registry:
     runs-on: ubuntu-latest
-    name: Push Nginx to Docker Hub
+    name: Push Node API to Docker Hub
     permissions:
       contents: write
       pull-requests: write
@@ -29,14 +28,14 @@ jobs:
       
       - name: docker build
         run: |
-          cd ./projects/fibonacci_calculator/nginx
-          docker build -t ${{ vars.DOCKER_USERNAME }}/nginx:${{ github.run_number }} -f dockerfile .
-          docker build -t ${{ vars.DOCKER_USERNAME }}/nginx:latest -f dockerfile .
+          cd ./projects/devops_directive_web_app/api_node
+          docker build -t ${{ vars.DOCKER_USERNAME }}/nodeapi:${{ github.run_number }} -f dockerfile .
+          docker build -t ${{ vars.DOCKER_USERNAME }}/nodeapi:latest -f dockerfile .
   
       - name: docker push
         run: |
-          docker image push ${{ vars.DOCKER_USERNAME }}/nginx:${{ github.run_number }}
-          docker image push ${{ vars.DOCKER_USERNAME }}/nginx:latest
+          docker image push ${{ vars.DOCKER_USERNAME }}/nodeapi:${{ github.run_number }}
+          docker image push ${{ vars.DOCKER_USERNAME }}/nodeapi:latest
       
       - name: Create App Token
         id: app_token
@@ -47,6 +46,6 @@ jobs:
 
       - name: Update docker tag variable
         run: |
-          gh variable set DOCKER_TAG -b ${{ github.run_number }}
+          gh variable set DOCKER_NODE_API_TAG -b ${{ github.run_number }}
         env:
           GITHUB_TOKEN: ${{ steps.app_token.outputs.token }}
