@@ -29,13 +29,13 @@ jobs:
       - name: docker build
         run: |
           cd ./projects/devops_directive_web_app/nginx
-          docker build -t ${{ vars.DOCKER_USERNAME }}/nginx:${{ github.run_number }} -f dockerfile .
-          docker build -t ${{ vars.DOCKER_USERNAME }}/nginx:latest -f dockerfile .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/dddnginx:${{ github.run_number }} -f dockerfile .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/dddnginx:latest -f dockerfile .
   
       - name: docker push
         run: |
-          docker image push ${{ vars.DOCKER_USERNAME }}/nginx:${{ github.run_number }}
-          docker image push ${{ vars.DOCKER_USERNAME }}/nginx:latest
+          docker image push ${{ secrets.DOCKER_USERNAME }}/dddnginx:${{ github.run_number }}
+          docker image push ${{ secrets.DOCKER_USERNAME }}/dddnginx:latest
       
       - name: Create App Token
         id: app_token
@@ -46,6 +46,6 @@ jobs:
 
       - name: Update docker tag variable
         run: |
-          gh variable set DOCKER_NGINX_TAG -b ${{ github.run_number }}
+          gh variable set DOCKER_DDD_NGINX_TAG -b ${{ github.run_number }}
         env:
           GITHUB_TOKEN: ${{ steps.app_token.outputs.token }}

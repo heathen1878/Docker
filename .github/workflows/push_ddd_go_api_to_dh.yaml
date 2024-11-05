@@ -29,13 +29,13 @@ jobs:
       - name: docker build
         run: |
           cd ./projects/devops_directive_web_app/api_go_lang
-          docker build -t ${{ vars.DOCKER_USERNAME }}/goapi:${{ github.run_number }} -f dockerfile .
-          docker build -t ${{ vars.DOCKER_USERNAME }}/goapi:latest -f dockerfile .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/dddgoapi:${{ github.run_number }} -f dockerfile .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/dddgoapi:latest -f dockerfile .
   
       - name: docker push
         run: |
-          docker image push ${{ vars.DOCKER_USERNAME }}/goapi:${{ github.run_number }}
-          docker image push ${{ vars.DOCKER_USERNAME }}/goapi:latest
+          docker image push ${{ secrets.DOCKER_USERNAME }}/dddgoapi:${{ github.run_number }}
+          docker image push ${{ secrets.DOCKER_USERNAME }}/dddgoapi:latest
       
       - name: Create App Token
         id: app_token
