@@ -29,11 +29,13 @@ jobs:
       - name: docker build
         run: |
           cd ./projects/fibonacci_calculator/client
-          docker build -t ${{ vars.DOCKER_USERNAME }}/client:${{ github.run_number }} -f dockerfile .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/client:${{ github.run_number }} -f dockerfile .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/client:latest -f dockerfile .
   
       - name: docker push
         run: |
-          docker image push ${{ vars.DOCKER_USERNAME }}/client:${{ github.run_number }}
+          docker image push ${{ secrets.DOCKER_USERNAME }}/client:${{ github.run_number }}
+          docker image push ${{ secrets.DOCKER_USERNAME }}/client:latest
       
       - name: Create App Token
         id: app_token
@@ -44,6 +46,6 @@ jobs:
 
       - name: Update docker tag variable
         run: |
-          gh variable set DOCKER_TAG -b ${{ github.run_number }}
+          gh variable set DOCKER_FIB_CALC_CLIENT_TAG -b ${{ github.run_number }}
         env:
           GITHUB_TOKEN: ${{ steps.app_token.outputs.token }}

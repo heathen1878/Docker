@@ -29,13 +29,13 @@ jobs:
       - name: docker build
         run: |
           cd ./projects/devops_directive_web_app/api_node
-          docker build -t ${{ vars.DOCKER_USERNAME }}/nodeapi:${{ github.run_number }} -f dockerfile .
-          docker build -t ${{ vars.DOCKER_USERNAME }}/nodeapi:latest -f dockerfile .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/dddnodeapi:${{ github.run_number }} -f dockerfile .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/dddnodeapi:latest -f dockerfile .
   
       - name: docker push
         run: |
-          docker image push ${{ vars.DOCKER_USERNAME }}/nodeapi:${{ github.run_number }}
-          docker image push ${{ vars.DOCKER_USERNAME }}/nodeapi:latest
+          docker image push ${{ secrets.DOCKER_USERNAME }}/dddnodeapi:${{ github.run_number }}
+          docker image push ${{ secrets.DOCKER_USERNAME }}/dddnodeapi:latest
       
       - name: Create App Token
         id: app_token
@@ -46,6 +46,6 @@ jobs:
 
       - name: Update docker tag variable
         run: |
-          gh variable set DOCKER_NODE_API_TAG -b ${{ github.run_number }}
+          gh variable set DOCKER_DDD_NODE_API_TAG -b ${{ github.run_number }}
         env:
           GITHUB_TOKEN: ${{ steps.app_token.outputs.token }}
